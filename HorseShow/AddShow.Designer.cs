@@ -269,6 +269,7 @@
             this.btnRemoveClass.TabIndex = 1;
             this.btnRemoveClass.Text = "-";
             this.btnRemoveClass.UseVisualStyleBackColor = true;
+            this.btnRemoveClass.Click += new System.EventHandler(this.btnRemoveClass_Click);
             // 
             // lblHiddenValue
             // 

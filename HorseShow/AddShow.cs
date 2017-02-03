@@ -123,43 +123,44 @@ namespace HorseShow
             //int entryIndex = listEvents.SelectedIndex;
             //MessageBox.Show("Event Index is " + entryIndex);
 
-            //SQL Attempt
-            int selectedEventIndex = listEvents.SelectedIndex;
-            string connection = getConnectionString();
-            string classListView = "select className from tempClasses where eventIndex = " + selectedEventIndex;
-
-            if (!(listClasses.Items.Count == 0))
-            {
-
-                listClasses.Items.Clear();
-
-                using (SqlConnection conn = new SqlConnection(connection))
-                {
-                    SqlCommand sqlListClasses = new SqlCommand(classListView, conn);
-                    conn.Open();
-                    using (SqlDataReader reader = sqlListClasses.ExecuteReader())
-                    {
-                        while (reader.Read())
-                        {
-                            listClasses.Items.Add(reader["className"].ToString());
-                        }
-                    }
-                }
-            }
+            updateClassList();
         }
 
         private void btnRemoveEvent_Click(object sender, EventArgs e)
         {
-            //remove logic will require an algorithm to update the eventIndex column in the tempClasses table to be one index less for 
-            //all indexes with a number greater than the index deleted, updated to be 1 less
-            //delete all classes associated with the selected eventIndex.
             //TODO: Need to prevent removal of an event after a Rider/Horse entry has been added and updated with a Time using that Event. 
             //      This is needed to prevent data integrity issues.
 
             int eventToDeleteIndex = listEvents.SelectedIndex;
             string connection = getConnectionString();
+            string deleteClassesFromRemovedEvent = "delete from tempClasses where eventIndex = " + eventToDeleteIndex;
+            string classTempUpdateQuery = "update tempClasses set eventIndex = (eventIndex - 1) where eventIndex > " + eventToDeleteIndex;
 
             listEvents.Items.RemoveAt(eventToDeleteIndex);
+
+            using (SqlConnection conn = new SqlConnection(connection))
+            {
+                conn.Open();
+                SqlCommand updateClassTemp = new SqlCommand(classTempUpdateQuery, conn);
+                SqlCommand deleteClassTemp = new SqlCommand(deleteClassesFromRemovedEvent, conn);
+                deleteClassTemp.ExecuteNonQuery();
+                updateClassTemp.ExecuteNonQuery();
+            }
+
+            updateClassList();
+        }
+
+        private void btnRemoveClass_Click(object sender, EventArgs e)
+        {
+            int eventIndexForClassToDelete = listEvents.SelectedIndex;
+            string classNameToDelete = listClasses.SelectedItem.ToString();
+            string connection = getConnectionString();
+            string deleteClassFromTempClass = "delete from tempClasses where className = '" + classNameToDelete + "' and eventIndex = " + eventIndexForClassToDelete;
+
+            //for debug
+            MessageBox.Show("Going to delete " + classNameToDelete + "with eventIndex of " + eventIndexForClassToDelete);
+
+
 
 
         }
@@ -167,7 +168,6 @@ namespace HorseShow
         private void frmAddShow_FormClosing(object sender, FormClosingEventArgs e)
         {
             string dbConnectString = getConnectionString();
-            // example: IF OBJECT_ID('tempdb..#Results') IS NOT NULL DROP TABLE #Results
 
             using (SqlConnection conn = new SqlConnection(dbConnectString))
             {
@@ -175,6 +175,30 @@ namespace HorseShow
                 SqlCommand removeClassesTemp = new SqlCommand("IF OBJECT_ID('tempClasses') IS NOT NULL DROP TABLE tempClasses", conn);
                 removeClassesTemp.ExecuteNonQuery();
                 conn.Close();
+            }
+        }
+
+        public void updateClassList()
+        {
+            //Call this function any time the Class listview needs to be updated. 
+            int selectedEventIndex = listEvents.SelectedIndex;
+            string connection = getConnectionString();
+            string classListView = "select className from tempClasses where eventIndex = " + selectedEventIndex;
+
+
+            listClasses.Items.Clear();
+
+            using (SqlConnection conn = new SqlConnection(connection))
+            {
+                SqlCommand sqlListClasses = new SqlCommand(classListView, conn);
+                conn.Open();
+                using (SqlDataReader reader = sqlListClasses.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        listClasses.Items.Add(reader["className"].ToString());
+                    }
+                }
             }
         }
 
