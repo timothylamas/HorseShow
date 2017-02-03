@@ -30,9 +30,6 @@ namespace HorseShow
 
             string dbConnectString = getConnectionString();
 
-            //string createTempShowsQuery = "create table #tempShows (ShowID int, ShowProducer varchar, ShowContact varchar, ShowPhoneNumber varchar, ShowDate date, ShowLocation varchar, ShowNotes varchar";
-
-            //string createTempEntryFeeQuery = "create table #tempEntryFees (EntryFeeID int, Link2EventID int, Link2ClassID int, FeeAmount float)";
             string createTempClassesQuery = "create table tempClasses (eventIndex int, className varchar(50), entryfee float, additionalMoneyAmount float)";
 
             using (SqlConnection conn = new SqlConnection(dbConnectString))
@@ -47,11 +44,6 @@ namespace HorseShow
 
                 conn.Close();
             }
-
-            //var eventsList = new Dictionary<string, List<eventClasses>>();
-
-
-
         }
 
         private void btnAddEditShowCancel_Click(object sender, EventArgs e)
@@ -61,44 +53,6 @@ namespace HorseShow
 
         private void btnAddEvent_Click(object sender, EventArgs e)
         {
-            //string dbConnectString = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\HorseShowDB.mdf;Integrated Security=True;Connect Timeout=30";
-            //string createTempEventQuery = "create table #tempEvents (EventID int IDENTITY (1, 1) NOT NULL, EventName varchar, Link2ShowID int)";
-            //string createTempClassesQuery = "create table #tempClasses (ClassID int IDENTITY (1, 1) NOT NULL, ClassName varchar, Link2EventID int, EntryFee float, AdditionalMoneyAmount float)";
-
-
-            //using (SqlConnection conn = new SqlConnection(dbConnectString))
-            //{
-            //    conn.Open();
-
-            //    SqlCommand createTempEventsTable = new SqlCommand(createTempEventQuery);
-            //    SqlCommand createTempClassesTable = new SqlCommand(createTempClassesQuery);
-            //    SqlCommand addEvent = new SqlCommand("insert into #tempEvents (EventName, Link2ShowID) values ('" + txtNewEventInput + "', 1)");
-
-            //    using (SqlDataAdapter a = new SqlDataAdapter("SELECT EventName FROM #tempEvents", conn))
-            //    {
-            //        // fill a data table
-            //        var t = new DataTable();
-            //        a.Fill(t);
-
-            //        // Bind the table to the list box
-            //        listEvents.DisplayMember = "Events";
-            //        listEvents.ValueMember = "EventName";
-            //        listEvents.DataSource = t;
-            //    }
-            //    conn.Close();
-            //}
-
-            //var newEvent = new eventClasses
-            //{
-            //    eventName = txtNewEventInput.Text
-            //};
-
-            //classViewList listOfClasses = new classViewList()
-            //{
-            //    classList = new List<eventClasses>()
-            //};
-
-            //listOfClasses.classList.Add(newEvent);
 
             string newEvent = txtNewEventInput.Text;
 
@@ -112,57 +66,11 @@ namespace HorseShow
 
                 txtNewEventInput.Text = "";
             }
-
-
         }
 
         
-
         private void btnAddClass_Click(object sender, EventArgs e)
         {
-            //string newClass = txtNewClassInput.Text;
-
-            ////Check to see if the listEvents has any entries. If not, error out. A Class is a child of an Event.
-            //if (listEvents.Items.Count == 0)
-            //{
-            //    MessageBox.Show("Please add an Event first!");
-            //} else if (newClass == "")
-            //{
-            //    //do nothing
-            //}else if (listEvents.SelectedIndex == -1)
-            //{
-            //    MessageBox.Show("Please select an Event for this Class.");
-            //}else
-            //{
-            //    MessageBox.Show("You added a Class!"); //debug
-
-            //    int selectedEventIndex = listEvents.SelectedIndex;
-
-            //    var newClassEntry = new eventClasses
-            //    {
-            //        eventIndex = selectedEventIndex,
-            //        className = newClass, 
-            //        entryFee = 0,
-            //        additionalMoneyAmount = 0
-            //    };
-
-            //    classViewList listOfClasses = new classViewList()
-            //    {
-            //        classList = new List<eventClasses>()
-            //    };
-
-            //    listOfClasses.classList.Add(newClassEntry);
-
-            //    var classesForEvent = listOfClasses.classList.Where(item => item.eventIndex == selectedEventIndex);
-
-            //    foreach (var index in classesForEvent)
-            //    {
-            //        listClasses.Items.Add(index.className);
-            //    }
-
-            //    txtNewClassInput.Text = "";
-
-            //}
 
             //SQL attempt
             string newClass = txtNewClassInput.Text;
@@ -193,13 +101,6 @@ namespace HorseShow
                     insertClass.ExecuteNonQuery();
 
                     SqlCommand sqlListClasses = new SqlCommand(classListView, conn);
-                    //SqlDataAdapter sqlDataAdap = new SqlDataAdapter(sqlListClasses);
-                    //DataTable classTable = new DataTable();
-                    //sqlDataAdap.Fill(classTable);
-
-                    //listClasses.DataSource = classTable;
-
-                    //var reader = sqlListClasses.ExecuteReader();
 
                     listClasses.Items.Clear();
 
@@ -210,11 +111,7 @@ namespace HorseShow
                             listClasses.Items.Add(reader["className"].ToString());
                         }
                     }
-                    
-                    //listClasses.DataSource = reader;
                 }
-
-                
 
                 txtNewClassInput.Text = "";
             }
@@ -226,22 +123,6 @@ namespace HorseShow
             //int entryIndex = listEvents.SelectedIndex;
             //MessageBox.Show("Event Index is " + entryIndex);
 
-            //int selectedEventIndex = listEvents.SelectedIndex;
-
-            //listClasses.Items.Clear();
-
-            //classViewList listOfClasses = new classViewList()
-            //{
-            //    classList = new List<eventClasses>()
-            //};
-
-            //var classesForEvent = listOfClasses.classList.Where(item => item.eventIndex == selectedEventIndex);
-
-            //foreach (var index in classesForEvent)
-            //{
-            //    listClasses.Items.Add(index.className);
-            //}
-
             //SQL Attempt
             int selectedEventIndex = listEvents.SelectedIndex;
             string connection = getConnectionString();
@@ -249,23 +130,6 @@ namespace HorseShow
 
             if (!(listClasses.Items.Count == 0))
             {
-                //SqlConnection conn = new SqlConnection(connection);
-                //SqlCommand sqlListClasses = new SqlCommand(classListView);
-                //sqlListClasses.Connection = conn; 
-                //SqlDataAdapter sqlDataAdap = new SqlDataAdapter(sqlListClasses);
-
-                //DataTable classTable = new DataTable();
-                //sqlDataAdap.Fill(classTable);
-
-                //listClasses.DataSource = classTable;
-
-                //using (SqlDataReader reader = sqlListClasses.ExecuteReader())
-                //{
-                //    while (reader.Read())
-                //    {
-                //        listClasses.DataSource = reader["className"].ToString();
-                //    }
-                //}
 
                 listClasses.Items.Clear();
 
@@ -280,10 +144,23 @@ namespace HorseShow
                             listClasses.Items.Add(reader["className"].ToString());
                         }
                     }
-
-                    grdClassViewTest.DataSource = listClasses; //debug
                 }
             }
+        }
+
+        private void btnRemoveEvent_Click(object sender, EventArgs e)
+        {
+            //remove logic will require an algorithm to update the eventIndex column in the tempClasses table to be one index less for 
+            //all indexes with a number greater than the index deleted, updated to be 1 less
+            //delete all classes associated with the selected eventIndex.
+            //TODO: Need to prevent removal of an event after a Rider/Horse entry has been added and updated with a Time using that Event. 
+            //      This is needed to prevent data integrity issues.
+
+            int eventToDeleteIndex = listEvents.SelectedIndex;
+            string connection = getConnectionString();
+
+            listEvents.Items.RemoveAt(eventToDeleteIndex);
+
 
         }
 
@@ -295,8 +172,8 @@ namespace HorseShow
             using (SqlConnection conn = new SqlConnection(dbConnectString))
             {
                 conn.Open();
-                //SqlCommand removeEventTemp = new SqlCommand("IF OBJECT_ID('#tempEvents') IS NOT NULL DROP TABLE #tempEvents");
-                SqlCommand removeClassesTemp = new SqlCommand("IF OBJECT_ID('tempClasses') IS NOT NULL DROP TABLE tempClasses");
+                SqlCommand removeClassesTemp = new SqlCommand("IF OBJECT_ID('tempClasses') IS NOT NULL DROP TABLE tempClasses", conn);
+                removeClassesTemp.ExecuteNonQuery();
                 conn.Close();
             }
         }
@@ -307,19 +184,5 @@ namespace HorseShow
 
             return dbConnectString;
         }
-    }
-
-
-    public class eventClasses
-    {
-        public float entryFee { get; set; }
-        public float additionalMoneyAmount { get; set; }
-        public string className { get; set; }
-        public int eventIndex { get; set; }
-    }
-
-    public class classViewList
-    {
-        public List<eventClasses> classList { get; set; }
     }
 }

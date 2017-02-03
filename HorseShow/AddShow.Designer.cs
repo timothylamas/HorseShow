@@ -212,6 +212,7 @@
             this.btnRemoveEvent.TabIndex = 1;
             this.btnRemoveEvent.Text = "-";
             this.btnRemoveEvent.UseVisualStyleBackColor = true;
+            this.btnRemoveEvent.Click += new System.EventHandler(this.btnRemoveEvent_Click);
             // 
             // listEvents
             // 
