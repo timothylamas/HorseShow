@@ -1,0 +1,12 @@
+c:\users\apocalypse\documents\visual studio 2015\Projects\HorseShow\HorseShow\bin\Debug\HorseShow.exe.config
+c:\users\apocalypse\documents\visual studio 2015\Projects\HorseShow\HorseShow\bin\Debug\HorseShow.exe
+c:\users\apocalypse\documents\visual studio 2015\Projects\HorseShow\HorseShow\bin\Debug\HorseShow.pdb
+c:\users\apocalypse\documents\visual studio 2015\Projects\HorseShow\HorseShow\obj\Debug\HorseShow.csprojResolveAssemblyReference.cache
+c:\users\apocalypse\documents\visual studio 2015\Projects\HorseShow\HorseShow\obj\Debug\HorseShow.frmMain.resources
+c:\users\apocalypse\documents\visual studio 2015\Projects\HorseShow\HorseShow\obj\Debug\HorseShow.Properties.Resources.resources
+c:\users\apocalypse\documents\visual studio 2015\Projects\HorseShow\HorseShow\obj\Debug\HorseShow.csproj.GenerateResource.Cache
+c:\users\apocalypse\documents\visual studio 2015\Projects\HorseShow\HorseShow\obj\Debug\HorseShow.exe
+c:\users\apocalypse\documents\visual studio 2015\Projects\HorseShow\HorseShow\obj\Debug\HorseShow.pdb
+C:\Users\APOCALYPSE\Documents\Visual Studio 2015\Projects\HorseShow\HorseShow\bin\Debug\HorseShowDB.mdf
+C:\Users\APOCALYPSE\Documents\Visual Studio 2015\Projects\HorseShow\HorseShow\bin\Debug\HorseShowDB_log.ldf
+C:\Users\APOCALYPSE\Documents\Visual Studio 2015\Projects\HorseShow\HorseShow\obj\Debug\HorseShow.frmAddShow.resources

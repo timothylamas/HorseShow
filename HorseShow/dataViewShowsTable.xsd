@@ -1,0 +1,84 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema id="dataViewShowsTable" targetNamespace="http://tempuri.org/dataViewShowsTable.xsd" xmlns:mstns="http://tempuri.org/dataViewShowsTable.xsd" xmlns="http://tempuri.org/dataViewShowsTable.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" xmlns:msprop="urn:schemas-microsoft-com:xml-msprop" attributeFormDefault="qualified" elementFormDefault="qualified">
+  <xs:annotation>
+    <xs:appinfo source="urn:schemas-microsoft-com:xml-msdatasource">
+      <DataSource DefaultConnectionIndex="0" FunctionsComponentName="QueriesTableAdapter" Modifier="AutoLayout, AnsiClass, Class, Public" SchemaSerializationMode="IncludeSchema" xmlns="urn:schemas-microsoft-com:xml-msdatasource">
+        <Connections>
+          <Connection AppSettingsObjectName="Settings" AppSettingsPropertyName="HorseShowDBConnectionString" ConnectionStringObject="" IsAppSettingsProperty="true" Modifier="Assembly" Name="HorseShowDBConnectionString (Settings)" ParameterPrefix="@" PropertyReference="ApplicationSettings.HorseShow.Properties.Settings.GlobalReference.Default.HorseShowDBConnectionString" Provider="System.Data.SqlClient" />
+        </Connections>
+        <Tables>
+          <TableAdapter BaseClass="System.ComponentModel.Component" DataAccessorModifier="AutoLayout, AnsiClass, Class, Public" DataAccessorName="viewShowsTableTableAdapter" GeneratorDataComponentClassName="viewShowsTableTableAdapter" Name="viewShowsTable" UserDataComponentName="viewShowsTableTableAdapter">
+            <MainSource>
+              <DbSource ConnectionRef="HorseShowDBConnectionString (Settings)" DbObjectName="dbo.viewShowsTable" DbObjectType="View" FillMethodModifier="Public" FillMethodName="Fill" GenerateMethods="Both" GenerateShortCommands="false" GeneratorGetMethodName="GetData" GeneratorSourceName="Fill" GetMethodModifier="Public" GetMethodName="GetData" QueryType="Rowset" ScalarCallRetval="System.Object, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" UseOptimisticConcurrency="true" UserGetMethodName="GetData" UserSourceName="Fill">
+                <SelectCommand>
+                  <DbCommand CommandType="Text" ModifiedByUser="false">
+                    <CommandText>SELECT ShowProducer, ShowContact, ShowPhoneNumber, ShowDate, ShowLocation, ShowNotes FROM dbo.viewShowsTable</CommandText>
+                    <Parameters />
+                  </DbCommand>
+                </SelectCommand>
+              </DbSource>
+            </MainSource>
+            <Mappings>
+              <Mapping SourceColumn="ShowProducer" DataSetColumn="ShowProducer" />
+              <Mapping SourceColumn="ShowContact" DataSetColumn="ShowContact" />
+              <Mapping SourceColumn="ShowPhoneNumber" DataSetColumn="ShowPhoneNumber" />
+              <Mapping SourceColumn="ShowDate" DataSetColumn="ShowDate" />
+              <Mapping SourceColumn="ShowLocation" DataSetColumn="ShowLocation" />
+              <Mapping SourceColumn="ShowNotes" DataSetColumn="ShowNotes" />
+            </Mappings>
+            <Sources />
+          </TableAdapter>
+        </Tables>
+        <Sources />
+      </DataSource>
+    </xs:appinfo>
+  </xs:annotation>
+  <xs:element name="dataViewShowsTable" msdata:IsDataSet="true" msdata:UseCurrentLocale="true" msprop:EnableTableAdapterManager="True" msprop:Generator_DataSetName="dataViewShowsTable" msprop:Generator_UserDSName="dataViewShowsTable">
+    <xs:complexType>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element name="viewShowsTable" msprop:Generator_TableClassName="viewShowsTableDataTable" msprop:Generator_TableVarName="tableviewShowsTable" msprop:Generator_TablePropName="viewShowsTable" msprop:Generator_RowDeletingName="viewShowsTableRowDeleting" msprop:Generator_RowChangingName="viewShowsTableRowChanging" msprop:Generator_RowEvHandlerName="viewShowsTableRowChangeEventHandler" msprop:Generator_RowDeletedName="viewShowsTableRowDeleted" msprop:Generator_UserTableName="viewShowsTable" msprop:Generator_RowChangedName="viewShowsTableRowChanged" msprop:Generator_RowEvArgName="viewShowsTableRowChangeEvent" msprop:Generator_RowClassName="viewShowsTableRow">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="ShowProducer" msprop:Generator_ColumnVarNameInTable="columnShowProducer" msprop:Generator_ColumnPropNameInRow="ShowProducer" msprop:Generator_ColumnPropNameInTable="ShowProducerColumn" msprop:Generator_UserColumnName="ShowProducer" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="50" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="ShowContact" msprop:Generator_ColumnVarNameInTable="columnShowContact" msprop:Generator_ColumnPropNameInRow="ShowContact" msprop:Generator_ColumnPropNameInTable="ShowContactColumn" msprop:Generator_UserColumnName="ShowContact" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="50" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="ShowPhoneNumber" msprop:Generator_ColumnVarNameInTable="columnShowPhoneNumber" msprop:Generator_ColumnPropNameInRow="ShowPhoneNumber" msprop:Generator_ColumnPropNameInTable="ShowPhoneNumberColumn" msprop:Generator_UserColumnName="ShowPhoneNumber" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="50" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="ShowDate" msprop:Generator_ColumnVarNameInTable="columnShowDate" msprop:Generator_ColumnPropNameInRow="ShowDate" msprop:Generator_ColumnPropNameInTable="ShowDateColumn" msprop:Generator_UserColumnName="ShowDate" type="xs:dateTime" minOccurs="0" />
+              <xs:element name="ShowLocation" msprop:Generator_ColumnVarNameInTable="columnShowLocation" msprop:Generator_ColumnPropNameInRow="ShowLocation" msprop:Generator_ColumnPropNameInTable="ShowLocationColumn" msprop:Generator_UserColumnName="ShowLocation" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="50" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="ShowNotes" msprop:Generator_ColumnVarNameInTable="columnShowNotes" msprop:Generator_ColumnPropNameInRow="ShowNotes" msprop:Generator_ColumnPropNameInTable="ShowNotesColumn" msprop:Generator_UserColumnName="ShowNotes" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="50" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:choice>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>
