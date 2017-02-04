@@ -48,15 +48,17 @@
             this.btnRemoveEvent = new System.Windows.Forms.Button();
             this.listEvents = new System.Windows.Forms.ListBox();
             this.grpClasses = new System.Windows.Forms.GroupBox();
+            this.txtAdditionalMoney = new System.Windows.Forms.TextBox();
+            this.txtEntryFee = new System.Windows.Forms.TextBox();
+            this.lblAdditionalMoney = new System.Windows.Forms.Label();
+            this.lblEntryFee = new System.Windows.Forms.Label();
             this.txtNewClassInput = new System.Windows.Forms.TextBox();
             this.btnAddClass = new System.Windows.Forms.Button();
             this.listClasses = new System.Windows.Forms.ListBox();
             this.btnRemoveClass = new System.Windows.Forms.Button();
             this.lblHiddenValue = new System.Windows.Forms.Label();
-            this.grdClassViewTest = new System.Windows.Forms.DataGridView();
             this.grpEvents.SuspendLayout();
             this.grpClasses.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.grdClassViewTest)).BeginInit();
             this.SuspendLayout();
             // 
             // lblShowProducer
@@ -118,7 +120,7 @@
             this.txtShowProducer.Location = new System.Drawing.Point(103, 21);
             this.txtShowProducer.Name = "txtShowProducer";
             this.txtShowProducer.Size = new System.Drawing.Size(229, 20);
-            this.txtShowProducer.TabIndex = 1;
+            this.txtShowProducer.TabIndex = 0;
             // 
             // txtContactName
             // 
@@ -132,44 +134,45 @@
             this.txtPhoneNumber.Location = new System.Drawing.Point(103, 72);
             this.txtPhoneNumber.Name = "txtPhoneNumber";
             this.txtPhoneNumber.Size = new System.Drawing.Size(229, 20);
-            this.txtPhoneNumber.TabIndex = 1;
+            this.txtPhoneNumber.TabIndex = 2;
             // 
             // dateShowDate
             // 
             this.dateShowDate.Location = new System.Drawing.Point(103, 99);
             this.dateShowDate.Name = "dateShowDate";
             this.dateShowDate.Size = new System.Drawing.Size(200, 20);
-            this.dateShowDate.TabIndex = 2;
+            this.dateShowDate.TabIndex = 3;
             // 
             // txtLocation
             // 
             this.txtLocation.Location = new System.Drawing.Point(103, 125);
             this.txtLocation.Name = "txtLocation";
             this.txtLocation.Size = new System.Drawing.Size(229, 20);
-            this.txtLocation.TabIndex = 1;
+            this.txtLocation.TabIndex = 4;
             // 
             // txtNotes
             // 
             this.txtNotes.Location = new System.Drawing.Point(102, 152);
             this.txtNotes.Name = "txtNotes";
             this.txtNotes.Size = new System.Drawing.Size(229, 20);
-            this.txtNotes.TabIndex = 1;
+            this.txtNotes.TabIndex = 5;
             // 
             // btnAddEditShowSave
             // 
             this.btnAddEditShowSave.Location = new System.Drawing.Point(18, 408);
             this.btnAddEditShowSave.Name = "btnAddEditShowSave";
             this.btnAddEditShowSave.Size = new System.Drawing.Size(87, 23);
-            this.btnAddEditShowSave.TabIndex = 3;
+            this.btnAddEditShowSave.TabIndex = 6;
             this.btnAddEditShowSave.Text = "Save Changes";
             this.btnAddEditShowSave.UseVisualStyleBackColor = true;
+            this.btnAddEditShowSave.Click += new System.EventHandler(this.btnAddEditShowSave_Click);
             // 
             // btnAddEditShowCancel
             // 
             this.btnAddEditShowCancel.Location = new System.Drawing.Point(316, 408);
             this.btnAddEditShowCancel.Name = "btnAddEditShowCancel";
             this.btnAddEditShowCancel.Size = new System.Drawing.Size(87, 23);
-            this.btnAddEditShowCancel.TabIndex = 3;
+            this.btnAddEditShowCancel.TabIndex = 7;
             this.btnAddEditShowCancel.Text = "Cancel";
             this.btnAddEditShowCancel.UseVisualStyleBackColor = true;
             this.btnAddEditShowCancel.Click += new System.EventHandler(this.btnAddEditShowCancel_Click);
@@ -183,7 +186,7 @@
             this.grpEvents.Location = new System.Drawing.Point(12, 189);
             this.grpEvents.Name = "grpEvents";
             this.grpEvents.Size = new System.Drawing.Size(177, 203);
-            this.grpEvents.TabIndex = 4;
+            this.grpEvents.TabIndex = 7;
             this.grpEvents.TabStop = false;
             this.grpEvents.Text = "Events";
             // 
@@ -192,7 +195,7 @@
             this.txtNewEventInput.Location = new System.Drawing.Point(6, 173);
             this.txtNewEventInput.Name = "txtNewEventInput";
             this.txtNewEventInput.Size = new System.Drawing.Size(100, 20);
-            this.txtNewEventInput.TabIndex = 2;
+            this.txtNewEventInput.TabIndex = 0;
             // 
             // btnAddEvent
             // 
@@ -200,6 +203,7 @@
             this.btnAddEvent.Name = "btnAddEvent";
             this.btnAddEvent.Size = new System.Drawing.Size(24, 23);
             this.btnAddEvent.TabIndex = 1;
+            this.btnAddEvent.TabStop = false;
             this.btnAddEvent.Text = "+";
             this.btnAddEvent.UseVisualStyleBackColor = true;
             this.btnAddEvent.Click += new System.EventHandler(this.btnAddEvent_Click);
@@ -209,7 +213,8 @@
             this.btnRemoveEvent.Location = new System.Drawing.Point(142, 173);
             this.btnRemoveEvent.Name = "btnRemoveEvent";
             this.btnRemoveEvent.Size = new System.Drawing.Size(24, 23);
-            this.btnRemoveEvent.TabIndex = 1;
+            this.btnRemoveEvent.TabIndex = 2;
+            this.btnRemoveEvent.TabStop = false;
             this.btnRemoveEvent.Text = "-";
             this.btnRemoveEvent.UseVisualStyleBackColor = true;
             this.btnRemoveEvent.Click += new System.EventHandler(this.btnRemoveEvent_Click);
@@ -221,27 +226,64 @@
             this.listEvents.Name = "listEvents";
             this.listEvents.Size = new System.Drawing.Size(167, 147);
             this.listEvents.TabIndex = 0;
+            this.listEvents.TabStop = false;
             this.listEvents.SelectedValueChanged += new System.EventHandler(this.listEvents_SelectedValueChanged);
             // 
             // grpClasses
             // 
+            this.grpClasses.Controls.Add(this.txtAdditionalMoney);
+            this.grpClasses.Controls.Add(this.txtEntryFee);
+            this.grpClasses.Controls.Add(this.lblAdditionalMoney);
+            this.grpClasses.Controls.Add(this.lblEntryFee);
             this.grpClasses.Controls.Add(this.txtNewClassInput);
             this.grpClasses.Controls.Add(this.btnAddClass);
             this.grpClasses.Controls.Add(this.listClasses);
             this.grpClasses.Controls.Add(this.btnRemoveClass);
             this.grpClasses.Location = new System.Drawing.Point(226, 189);
             this.grpClasses.Name = "grpClasses";
-            this.grpClasses.Size = new System.Drawing.Size(177, 203);
-            this.grpClasses.TabIndex = 4;
+            this.grpClasses.Size = new System.Drawing.Size(277, 203);
+            this.grpClasses.TabIndex = 8;
             this.grpClasses.TabStop = false;
             this.grpClasses.Text = "Classes";
+            // 
+            // txtAdditionalMoney
+            // 
+            this.txtAdditionalMoney.Location = new System.Drawing.Point(182, 84);
+            this.txtAdditionalMoney.Name = "txtAdditionalMoney";
+            this.txtAdditionalMoney.Size = new System.Drawing.Size(73, 20);
+            this.txtAdditionalMoney.TabIndex = 4;
+            // 
+            // txtEntryFee
+            // 
+            this.txtEntryFee.Location = new System.Drawing.Point(182, 36);
+            this.txtEntryFee.Name = "txtEntryFee";
+            this.txtEntryFee.Size = new System.Drawing.Size(73, 20);
+            this.txtEntryFee.TabIndex = 3;
+            // 
+            // lblAdditionalMoney
+            // 
+            this.lblAdditionalMoney.AutoSize = true;
+            this.lblAdditionalMoney.Location = new System.Drawing.Point(179, 68);
+            this.lblAdditionalMoney.Name = "lblAdditionalMoney";
+            this.lblAdditionalMoney.Size = new System.Drawing.Size(91, 13);
+            this.lblAdditionalMoney.TabIndex = 3;
+            this.lblAdditionalMoney.Text = "Additional Money:";
+            // 
+            // lblEntryFee
+            // 
+            this.lblEntryFee.AutoSize = true;
+            this.lblEntryFee.Location = new System.Drawing.Point(179, 20);
+            this.lblEntryFee.Name = "lblEntryFee";
+            this.lblEntryFee.Size = new System.Drawing.Size(55, 13);
+            this.lblEntryFee.TabIndex = 0;
+            this.lblEntryFee.Text = "Entry Fee:";
             // 
             // txtNewClassInput
             // 
             this.txtNewClassInput.Location = new System.Drawing.Point(6, 173);
             this.txtNewClassInput.Name = "txtNewClassInput";
             this.txtNewClassInput.Size = new System.Drawing.Size(100, 20);
-            this.txtNewClassInput.TabIndex = 2;
+            this.txtNewClassInput.TabIndex = 0;
             // 
             // btnAddClass
             // 
@@ -249,6 +291,7 @@
             this.btnAddClass.Name = "btnAddClass";
             this.btnAddClass.Size = new System.Drawing.Size(24, 23);
             this.btnAddClass.TabIndex = 1;
+            this.btnAddClass.TabStop = false;
             this.btnAddClass.Text = "+";
             this.btnAddClass.UseVisualStyleBackColor = true;
             this.btnAddClass.Click += new System.EventHandler(this.btnAddClass_Click);
@@ -260,13 +303,16 @@
             this.listClasses.Name = "listClasses";
             this.listClasses.Size = new System.Drawing.Size(167, 147);
             this.listClasses.TabIndex = 0;
+            this.listClasses.TabStop = false;
+            this.listClasses.SelectedValueChanged += new System.EventHandler(this.listClasses_SelectedValueChanged);
             // 
             // btnRemoveClass
             // 
             this.btnRemoveClass.Location = new System.Drawing.Point(142, 173);
             this.btnRemoveClass.Name = "btnRemoveClass";
             this.btnRemoveClass.Size = new System.Drawing.Size(24, 23);
-            this.btnRemoveClass.TabIndex = 1;
+            this.btnRemoveClass.TabIndex = 2;
+            this.btnRemoveClass.TabStop = false;
             this.btnRemoveClass.Text = "-";
             this.btnRemoveClass.UseVisualStyleBackColor = true;
             this.btnRemoveClass.Click += new System.EventHandler(this.btnRemoveClass_Click);
@@ -277,24 +323,15 @@
             this.lblHiddenValue.Location = new System.Drawing.Point(357, 9);
             this.lblHiddenValue.Name = "lblHiddenValue";
             this.lblHiddenValue.Size = new System.Drawing.Size(68, 13);
-            this.lblHiddenValue.TabIndex = 5;
+            this.lblHiddenValue.TabIndex = 3;
             this.lblHiddenValue.Text = "hidden value";
             this.lblHiddenValue.Visible = false;
-            // 
-            // grdClassViewTest
-            // 
-            this.grdClassViewTest.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.grdClassViewTest.Location = new System.Drawing.Point(432, 209);
-            this.grdClassViewTest.Name = "grdClassViewTest";
-            this.grdClassViewTest.Size = new System.Drawing.Size(192, 150);
-            this.grdClassViewTest.TabIndex = 6;
             // 
             // frmAddShow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(647, 460);
-            this.Controls.Add(this.grdClassViewTest);
+            this.ClientSize = new System.Drawing.Size(519, 460);
             this.Controls.Add(this.lblHiddenValue);
             this.Controls.Add(this.grpClasses);
             this.Controls.Add(this.grpEvents);
@@ -316,13 +353,13 @@
             this.MaximizeBox = false;
             this.Name = "frmAddShow";
             this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide;
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Add Show";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.frmAddShow_FormClosing);
             this.grpEvents.ResumeLayout(false);
             this.grpEvents.PerformLayout();
             this.grpClasses.ResumeLayout(false);
             this.grpClasses.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.grdClassViewTest)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -355,6 +392,9 @@
         private System.Windows.Forms.ListBox listClasses;
         private System.Windows.Forms.Button btnRemoveClass;
         private System.Windows.Forms.Label lblHiddenValue;
-        private System.Windows.Forms.DataGridView grdClassViewTest;
+        private System.Windows.Forms.TextBox txtAdditionalMoney;
+        private System.Windows.Forms.TextBox txtEntryFee;
+        private System.Windows.Forms.Label lblAdditionalMoney;
+        private System.Windows.Forms.Label lblEntryFee;
     }
 }

@@ -55,5 +55,10 @@ namespace HorseShow
             this.viewShowsTableTableAdapter.Fill(this.dataViewShowsTable.viewShowsTable);
 
         }
+
+        private void btnRefreshShows_Click(object sender, EventArgs e)
+        {
+            grdShowsTable.DataSource = viewShowsTableBindingSource;
+        }
     }
 }

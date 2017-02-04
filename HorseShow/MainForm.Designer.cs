@@ -42,31 +42,31 @@
             this.btnNewShow = new System.Windows.Forms.Button();
             this.grpShows = new System.Windows.Forms.GroupBox();
             this.grdShowsTable = new System.Windows.Forms.DataGridView();
-            this.tabHorseRiderEntry = new System.Windows.Forms.TabPage();
-            this.label2 = new System.Windows.Forms.Label();
-            this.stripFooter = new System.Windows.Forms.StatusStrip();
-            this.stripVersionNumber = new System.Windows.Forms.ToolStripStatusLabel();
-            this.horseShowDBDataSet = new HorseShow.HorseShowDBDataSet();
-            this.dataViewShowsTable = new HorseShow.dataViewShowsTable();
-            this.viewShowsTableBindingSource = new System.Windows.Forms.BindingSource(this.components);
-            this.viewShowsTableTableAdapter = new HorseShow.dataViewShowsTableTableAdapters.viewShowsTableTableAdapter();
             this.showProducerDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.showContactDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.showPhoneNumberDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.showDateDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.showLocationDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.showNotesDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.viewShowsTableBindingSource = new System.Windows.Forms.BindingSource(this.components);
+            this.dataViewShowsTable = new HorseShow.dataViewShowsTable();
+            this.tabHorseRiderEntry = new System.Windows.Forms.TabPage();
+            this.label2 = new System.Windows.Forms.Label();
+            this.stripFooter = new System.Windows.Forms.StatusStrip();
+            this.stripVersionNumber = new System.Windows.Forms.ToolStripStatusLabel();
+            this.horseShowDBDataSet = new HorseShow.HorseShowDBDataSet();
+            this.viewShowsTableTableAdapter = new HorseShow.dataViewShowsTableTableAdapters.viewShowsTableTableAdapter();
             this.menuStrip1.SuspendLayout();
             this.toolStripMain.SuspendLayout();
             this.tabForms.SuspendLayout();
             this.tabShows.SuspendLayout();
             this.grpShows.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.grdShowsTable)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.viewShowsTableBindingSource)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dataViewShowsTable)).BeginInit();
             this.tabHorseRiderEntry.SuspendLayout();
             this.stripFooter.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.horseShowDBDataSet)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dataViewShowsTable)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.viewShowsTableBindingSource)).BeginInit();
             this.SuspendLayout();
             // 
             // menuStrip1
@@ -159,6 +159,7 @@
             this.btnRefreshShows.TabIndex = 2;
             this.btnRefreshShows.Text = "Refresh List";
             this.btnRefreshShows.UseVisualStyleBackColor = true;
+            this.btnRefreshShows.Click += new System.EventHandler(this.btnRefreshShows_Click);
             // 
             // btnNewShow
             // 
@@ -200,63 +201,6 @@
             this.grdShowsTable.ReadOnly = true;
             this.grdShowsTable.Size = new System.Drawing.Size(1219, 451);
             this.grdShowsTable.TabIndex = 0;
-            // 
-            // tabHorseRiderEntry
-            // 
-            this.tabHorseRiderEntry.Controls.Add(this.label2);
-            this.tabHorseRiderEntry.Location = new System.Drawing.Point(4, 22);
-            this.tabHorseRiderEntry.Name = "tabHorseRiderEntry";
-            this.tabHorseRiderEntry.Padding = new System.Windows.Forms.Padding(3);
-            this.tabHorseRiderEntry.Size = new System.Drawing.Size(1249, 540);
-            this.tabHorseRiderEntry.TabIndex = 1;
-            this.tabHorseRiderEntry.Text = "Rider/Horse Entry";
-            this.tabHorseRiderEntry.UseVisualStyleBackColor = true;
-            // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(8, 23);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(192, 13);
-            this.label2.TabIndex = 0;
-            this.label2.Text = "You are on the Horse/Rider Entry page";
-            // 
-            // stripFooter
-            // 
-            this.stripFooter.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.stripVersionNumber});
-            this.stripFooter.Location = new System.Drawing.Point(0, 636);
-            this.stripFooter.Name = "stripFooter";
-            this.stripFooter.Size = new System.Drawing.Size(1268, 22);
-            this.stripFooter.SizingGrip = false;
-            this.stripFooter.TabIndex = 3;
-            this.stripFooter.Text = "statusStrip1";
-            // 
-            // stripVersionNumber
-            // 
-            this.stripVersionNumber.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-            this.stripVersionNumber.Name = "stripVersionNumber";
-            this.stripVersionNumber.Size = new System.Drawing.Size(81, 17);
-            this.stripVersionNumber.Text = "Version 0.0.0.0";
-            // 
-            // horseShowDBDataSet
-            // 
-            this.horseShowDBDataSet.DataSetName = "HorseShowDBDataSet";
-            this.horseShowDBDataSet.SchemaSerializationMode = System.Data.SchemaSerializationMode.IncludeSchema;
-            // 
-            // dataViewShowsTable
-            // 
-            this.dataViewShowsTable.DataSetName = "dataViewShowsTable";
-            this.dataViewShowsTable.SchemaSerializationMode = System.Data.SchemaSerializationMode.IncludeSchema;
-            // 
-            // viewShowsTableBindingSource
-            // 
-            this.viewShowsTableBindingSource.DataMember = "viewShowsTable";
-            this.viewShowsTableBindingSource.DataSource = this.dataViewShowsTable;
-            // 
-            // viewShowsTableTableAdapter
-            // 
-            this.viewShowsTableTableAdapter.ClearBeforeFill = true;
             // 
             // showProducerDataGridViewTextBoxColumn
             // 
@@ -305,6 +249,63 @@
             this.showNotesDataGridViewTextBoxColumn.ReadOnly = true;
             this.showNotesDataGridViewTextBoxColumn.Width = 300;
             // 
+            // viewShowsTableBindingSource
+            // 
+            this.viewShowsTableBindingSource.DataMember = "viewShowsTable";
+            this.viewShowsTableBindingSource.DataSource = this.dataViewShowsTable;
+            // 
+            // dataViewShowsTable
+            // 
+            this.dataViewShowsTable.DataSetName = "dataViewShowsTable";
+            this.dataViewShowsTable.SchemaSerializationMode = System.Data.SchemaSerializationMode.IncludeSchema;
+            // 
+            // tabHorseRiderEntry
+            // 
+            this.tabHorseRiderEntry.Controls.Add(this.label2);
+            this.tabHorseRiderEntry.Location = new System.Drawing.Point(4, 22);
+            this.tabHorseRiderEntry.Name = "tabHorseRiderEntry";
+            this.tabHorseRiderEntry.Padding = new System.Windows.Forms.Padding(3);
+            this.tabHorseRiderEntry.Size = new System.Drawing.Size(1249, 540);
+            this.tabHorseRiderEntry.TabIndex = 1;
+            this.tabHorseRiderEntry.Text = "Rider/Horse Entry";
+            this.tabHorseRiderEntry.UseVisualStyleBackColor = true;
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(8, 23);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(192, 13);
+            this.label2.TabIndex = 0;
+            this.label2.Text = "You are on the Horse/Rider Entry page";
+            // 
+            // stripFooter
+            // 
+            this.stripFooter.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.stripVersionNumber});
+            this.stripFooter.Location = new System.Drawing.Point(0, 636);
+            this.stripFooter.Name = "stripFooter";
+            this.stripFooter.Size = new System.Drawing.Size(1268, 22);
+            this.stripFooter.SizingGrip = false;
+            this.stripFooter.TabIndex = 3;
+            this.stripFooter.Text = "statusStrip1";
+            // 
+            // stripVersionNumber
+            // 
+            this.stripVersionNumber.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.stripVersionNumber.Name = "stripVersionNumber";
+            this.stripVersionNumber.Size = new System.Drawing.Size(81, 17);
+            this.stripVersionNumber.Text = "Version 0.0.0.0";
+            // 
+            // horseShowDBDataSet
+            // 
+            this.horseShowDBDataSet.DataSetName = "HorseShowDBDataSet";
+            this.horseShowDBDataSet.SchemaSerializationMode = System.Data.SchemaSerializationMode.IncludeSchema;
+            // 
+            // viewShowsTableTableAdapter
+            // 
+            this.viewShowsTableTableAdapter.ClearBeforeFill = true;
+            // 
             // frmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -328,13 +329,13 @@
             this.tabShows.ResumeLayout(false);
             this.grpShows.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.grdShowsTable)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.viewShowsTableBindingSource)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dataViewShowsTable)).EndInit();
             this.tabHorseRiderEntry.ResumeLayout(false);
             this.tabHorseRiderEntry.PerformLayout();
             this.stripFooter.ResumeLayout(false);
             this.stripFooter.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.horseShowDBDataSet)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dataViewShowsTable)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.viewShowsTableBindingSource)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 

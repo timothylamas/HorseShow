@@ -18,15 +18,13 @@ namespace HorseShow
         {
             InitializeComponent();
 
-            //// Create Show, Event, Class, Additional Money, and Entry Fee temp tables. 
-            //// We may not have to link the Events to the Show but we will need to link the Class temp table to the Events temp table, then AdditionalMoney and EntryFee temp tables 
-            //// to the Event and Class temp tables. This way the user can see what the event, class, fee, and addl money structure looks like before saving to the real tables. 
-            ////
-            ////Adding Records via sql...
-            ////Add the following line to the end of the Sql Query...
-            ////SELECT SCOPE_IDENTITY()
-            ////And then use the ExecuteScalar method on the SqlCommand object...
-            ////var rowCount = command.ExecuteScalar()
+            this.ActiveControl = txtShowProducer;
+
+            // Create Show, Event, Class, Additional Money, and Entry Fee temp tables. 
+            // We may not have to link the Events to the Show but we will need to link the Class temp table to the Events temp table, then AdditionalMoney and EntryFee temp tables 
+            // to the Event and Class temp tables. This way the user can see what the event, class, fee, and addl money structure looks like before saving to the real tables. 
+            //
+
 
             string dbConnectString = getConnectionString();
 
@@ -76,8 +74,8 @@ namespace HorseShow
             string newClass = txtNewClassInput.Text;
             int selectedEventIndex = listEvents.SelectedIndex;
             string connection = getConnectionString();
-            string insertClassQuery = "insert into tempClasses (eventIndex, className, entryfee, additionalMoneyAmount) values (" + selectedEventIndex + ", '" + newClass + "',0.0,0.0)";
             string classListView = "select className from tempClasses where eventIndex = " + selectedEventIndex;
+            int val;
 
             if (listEvents.Items.Count == 0)
             {
@@ -91,8 +89,16 @@ namespace HorseShow
             {
                 MessageBox.Show("Please select an Event for this Class.");
             }
+            else if (!(int.TryParse(txtAdditionalMoney.Text, out val)) || !(int.TryParse(txtEntryFee.Text, out val)))
+            {
+                MessageBox.Show("Please enter a number for EntryFee and AdditionalMoney for the new class.");
+                txtEntryFee.Text = "";
+                txtAdditionalMoney.Text = "";
+            }
             else
             {
+                string insertClassQuery = "insert into tempClasses (eventIndex, className, entryfee, additionalMoneyAmount) values (" + selectedEventIndex + ", '" + newClass + "', " + txtEntryFee.Text + ", " + txtAdditionalMoney.Text + ")";
+
                 using (SqlConnection conn = new SqlConnection(connection))
                 {
                     conn.Open();
@@ -124,6 +130,36 @@ namespace HorseShow
             //MessageBox.Show("Event Index is " + entryIndex);
 
             updateClassList();
+        }
+
+        private void listClasses_SelectedValueChanged(object sender, EventArgs e)
+        {
+            int eventIndex = listEvents.SelectedIndex;
+            string className = listClasses.SelectedItem.ToString();
+            string connection = getConnectionString();
+            string getMoneyQuery = "select entryFee, additionalMoneyAmount from tempClasses where className = '" + className + "' and eventIndex = " + eventIndex;
+
+            //populate the entry fees and additional money
+
+            txtEntryFee.Text = "";
+            txtAdditionalMoney.Text = "";
+
+            using (SqlConnection conn = new SqlConnection(connection))
+            {
+                conn.Open();
+                SqlCommand getMoney = new SqlCommand(getMoneyQuery, conn);
+                getMoney.ExecuteNonQuery();
+
+                using (SqlDataReader reader = getMoney.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        txtAdditionalMoney.Text = (reader["additionalMoneyAmount"].ToString());
+                        txtEntryFee.Text = (reader["entryFee"].ToString());
+                    }
+                }
+
+            }
         }
 
         private void btnRemoveEvent_Click(object sender, EventArgs e)
@@ -158,11 +194,16 @@ namespace HorseShow
             string deleteClassFromTempClass = "delete from tempClasses where className = '" + classNameToDelete + "' and eventIndex = " + eventIndexForClassToDelete;
 
             //for debug
-            MessageBox.Show("Going to delete " + classNameToDelete + "with eventIndex of " + eventIndexForClassToDelete);
+            //MessageBox.Show("Going to delete " + classNameToDelete + "with eventIndex of " + eventIndexForClassToDelete);
 
+            using (SqlConnection conn = new SqlConnection(connection))
+            {
+                conn.Open();
+                SqlCommand deleteClass = new SqlCommand(deleteClassFromTempClass, conn);
+                deleteClass.ExecuteNonQuery();
+            }
 
-
-
+            updateClassList();
         }
 
         private void frmAddShow_FormClosing(object sender, FormClosingEventArgs e)
@@ -207,6 +248,70 @@ namespace HorseShow
             string dbConnectString = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\HorseShowDB.mdf;Integrated Security=True;Connect Timeout=30";
 
             return dbConnectString;
+        }
+
+        private void btnAddEditShowSave_Click(object sender, EventArgs e)
+        {
+            //To save this to the database tables first we will need to insert the Show data and get the ID of the written record (see example below).
+            //Once we have the ID of the show we need to iterate through the list of items in listEvents and create a new Event record for each, insertng the saved ShowID.
+            //In each iteration we need to check the classTemp database for all Classes for that eventIndex, and write a Classes record for each, returning the ID of each record written
+            //and using that ID to write a EventMoney record with the saved EventID, entryFee and AdditionalMoneyAmount in their respective columns.
+            //This will write the relationships between the data.
+
+            //Adding Records via sql...
+            //Add the following line to the end of the Sql Query...
+            //SELECT SCOPE_IDENTITY()
+            //And then use the ExecuteScalar method on the SqlCommand object...
+            //var rowCount = command.ExecuteScalar()
+
+            string connection = getConnectionString();
+            string insertShowsTableQuery = "insert into Shows (ShowProducer, ShowContact, ShowPhoneNumber, ShowDate, ShowLocation, ShowNotes) values ('" + txtShowProducer.Text + "', '" + txtContactName.Text + "', '" + txtPhoneNumber.Text + "', '" + dateShowDate.Value + "', '" + txtLocation.Text + "', '" + txtNotes.Text + "') SELECT SCOPE_IDENTITY()";
+
+            using (SqlConnection conn = new SqlConnection(connection))
+            {
+                conn.Open();
+                SqlCommand insertShows = new SqlCommand(insertShowsTableQuery, conn);
+                var showID = insertShows.ExecuteScalar();
+                int showIDint = Convert.ToInt32(showID);
+
+                foreach (object item in listEvents.Items)
+                {
+                    string eventName = (string)item;
+                    string insertEventsQuery = "insert into Events (EventName, Link2ShowID) values ('" + eventName + "', " + showIDint + ")";
+                    string returnClassesInEventQuery = "select className, entryfee, additionalMoneyAmount from tempClasses where eventIndex = " + listEvents.SelectedIndex;
+
+                    SqlConnection events = new SqlConnection(connection);
+                    SqlCommand insertEvents = new SqlCommand(insertEventsQuery, events);
+                    events.Open();
+                    var EventID = insertEvents.ExecuteScalar();
+                    int eventIDint = Convert.ToInt32(EventID);
+
+                    SqlCommand returnClasses = new SqlCommand(returnClassesInEventQuery, conn);
+
+                    using (SqlDataReader reader = returnClasses.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+
+                            SqlConnection conn2 = new SqlConnection(connection);
+                            string insertClassesQuery = "insert into Classes (ClassName, Link2EventID) values ('" + reader["className"].ToString() + "', " + eventIDint + ")";
+                            SqlCommand insertClasses = new SqlCommand(insertClassesQuery, conn2);
+                            conn2.Open();
+                            var ClassID = insertClasses.ExecuteScalar();
+                            int classIDint = Convert.ToInt32(ClassID);
+
+                            string insertEventMoneyQuery = "insert into EventMoney (Link2EventID, Link2ClassID, EntryFee, AdditionalMoneyAmount) values (" + eventIDint + ", " + classIDint + ", " + reader["entryFee"].ToString() + ", " + reader["additionalMoneyAmount"].ToString() + ")";
+                            SqlCommand insertEventMoney = new SqlCommand(insertEventMoneyQuery, conn2);
+                            insertEventMoney.ExecuteNonQuery();
+                        }
+                    }
+                }
+            }
+
+            //for debug
+            MessageBox.Show("Record added!");
+
+            this.Close();
         }
     }
 }
