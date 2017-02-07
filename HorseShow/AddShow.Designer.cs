@@ -163,7 +163,7 @@
             this.btnAddEditShowSave.Name = "btnAddEditShowSave";
             this.btnAddEditShowSave.Size = new System.Drawing.Size(87, 23);
             this.btnAddEditShowSave.TabIndex = 6;
-            this.btnAddEditShowSave.Text = "Save Changes";
+            this.btnAddEditShowSave.Text = "Save Show";
             this.btnAddEditShowSave.UseVisualStyleBackColor = true;
             this.btnAddEditShowSave.Click += new System.EventHandler(this.btnAddEditShowSave_Click);
             // 

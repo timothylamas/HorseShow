@@ -13,9 +13,12 @@ namespace HorseShow
 {
     public partial class frmAddShow : Form
     {
+        private readonly Action _updateShowsTable; //pass in the Main form for updating
 
-        public frmAddShow()
+        public frmAddShow(Action updateShowsTable) //Action and variable for updating Shows table on the main form
         {
+            _updateShowsTable = updateShowsTable; //for updating the Shows table on the main form 
+
             InitializeComponent();
 
             this.ActiveControl = txtShowProducer;
@@ -310,6 +313,8 @@ namespace HorseShow
 
             //for debug
             MessageBox.Show("Record added!");
+
+            _updateShowsTable(); //for updating the Shows table on the main form
 
             this.Close();
         }

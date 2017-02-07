@@ -46,17 +46,18 @@ namespace HorseShow
         {
             
 
-            frmAddShow showData = new frmAddShow();
+            frmAddShow showData = new frmAddShow(updateShowsTable);
 
             showData.Show();
         }
 
         private void frmMain_Load(object sender, EventArgs e)
         {
-            // TODO: This line of code loads data into the 'dataViewShowsTable.viewShowsTable' table. You can move, or remove it, as needed.
-            this.viewShowsTableTableAdapter.Fill(this.dataViewShowsTable.viewShowsTable);
-            // TODO: This line of code loads data into the 'dataViewShowsTable.viewShowsTable' table. You can move, or remove it, as needed.
-            this.viewShowsTableTableAdapter.Fill(this.dataViewShowsTable.viewShowsTable);
+            //// TODO: This line of code loads data into the 'dataViewShowsTable.viewShowsTable' table. You can move, or remove it, as needed.
+            //this.viewShowsTableTableAdapter.Fill(this.dataViewShowsTable.viewShowsTable);
+            //// TODO: This line of code loads data into the 'dataViewShowsTable.viewShowsTable' table. You can move, or remove it, as needed.
+            //this.viewShowsTableTableAdapter.Fill(this.dataViewShowsTable.viewShowsTable);
+            updateShowsTable();
 
         }
 
@@ -67,7 +68,7 @@ namespace HorseShow
 
         }
 
-        public static void updateShowsTable()
+        public void updateShowsTable()
         {
             string connect = getConnectionString();
             string updateQuery = "select * from viewShowsTable";
