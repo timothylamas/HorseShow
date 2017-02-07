@@ -78,6 +78,12 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>dataViewShowsTable.xsd</DependentUpon>
     </Compile>
+    <Compile Include="EditShow.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="EditShow.Designer.cs">
+      <DependentUpon>EditShow.cs</DependentUpon>
+    </Compile>
     <Compile Include="HorseShowDBDataSet.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -96,6 +102,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="AdminConsole.resx">
       <DependentUpon>AdminConsole.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="EditShow.resx">
+      <DependentUpon>EditShow.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>

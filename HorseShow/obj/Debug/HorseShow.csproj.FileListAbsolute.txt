@@ -11,3 +11,4 @@ C:\Users\APOCALYPSE\Documents\Visual Studio 2015\Projects\HorseShow\HorseShow\bi
 C:\Users\APOCALYPSE\Documents\Visual Studio 2015\Projects\HorseShow\HorseShow\bin\Debug\HorseShowDB_log.ldf
 C:\Users\APOCALYPSE\Documents\Visual Studio 2015\Projects\HorseShow\HorseShow\obj\Debug\HorseShow.frmAddShow.resources
 C:\Users\APOCALYPSE\Documents\Visual Studio 2015\Projects\HorseShow\HorseShow\obj\Debug\HorseShow.frmAdminConsole.resources
+C:\Users\APOCALYPSE\Documents\Visual Studio 2015\Projects\HorseShow\HorseShow\obj\Debug\HorseShow.frmEditShow.resources

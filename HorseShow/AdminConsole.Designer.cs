@@ -51,7 +51,7 @@
             // 
             this.txtSQLQuery.Location = new System.Drawing.Point(22, 43);
             this.txtSQLQuery.Name = "txtSQLQuery";
-            this.txtSQLQuery.Size = new System.Drawing.Size(780, 20);
+            this.txtSQLQuery.Size = new System.Drawing.Size(1144, 20);
             this.txtSQLQuery.TabIndex = 1;
             this.txtSQLQuery.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtSQLQuery_KeyDown);
             // 
@@ -59,10 +59,9 @@
             // 
             this.grdSQLResults.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.grdSQLResults.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.grdSQLResults.Dock = System.Windows.Forms.DockStyle.Fill;
             this.grdSQLResults.Location = new System.Drawing.Point(3, 16);
             this.grdSQLResults.Name = "grdSQLResults";
-            this.grdSQLResults.Size = new System.Drawing.Size(858, 467);
+            this.grdSQLResults.Size = new System.Drawing.Size(1235, 467);
             this.grdSQLResults.TabIndex = 2;
             // 
             // lblResultOutput
@@ -75,7 +74,7 @@
             // 
             // btnRunQuery
             // 
-            this.btnRunQuery.Location = new System.Drawing.Point(812, 40);
+            this.btnRunQuery.Location = new System.Drawing.Point(1182, 40);
             this.btnRunQuery.Name = "btnRunQuery";
             this.btnRunQuery.Size = new System.Drawing.Size(75, 23);
             this.btnRunQuery.TabIndex = 5;
@@ -88,7 +87,7 @@
             this.grpOutput.Controls.Add(this.grdSQLResults);
             this.grpOutput.Location = new System.Drawing.Point(19, 70);
             this.grpOutput.Name = "grpOutput";
-            this.grpOutput.Size = new System.Drawing.Size(864, 486);
+            this.grpOutput.Size = new System.Drawing.Size(1244, 486);
             this.grpOutput.TabIndex = 6;
             this.grpOutput.TabStop = false;
             this.grpOutput.Text = "Output";
@@ -97,12 +96,13 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(905, 574);
+            this.ClientSize = new System.Drawing.Size(1275, 574);
             this.Controls.Add(this.grpOutput);
             this.Controls.Add(this.btnRunQuery);
             this.Controls.Add(this.lblResultOutput);
             this.Controls.Add(this.txtSQLQuery);
             this.Controls.Add(this.lblSQLQuery);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.MaximizeBox = false;
             this.Name = "frmAdminConsole";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;

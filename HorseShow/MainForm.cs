@@ -25,6 +25,20 @@ namespace HorseShow
             tabForms.SizeMode = TabSizeMode.Fixed;
 
             updateShowsTable();
+
+            //add the Edit and Delete buttons to the grdShowsTable datagridview 
+            DataGridViewButtonColumn btnEdit = new DataGridViewButtonColumn();
+            grdShowsTable.Columns.Add(btnEdit);
+            btnEdit.Text = "Edit";
+            btnEdit.UseColumnTextForButtonValue = true;
+
+            DataGridViewButtonColumn btnDelete = new DataGridViewButtonColumn();
+            grdShowsTable.Columns.Add(btnDelete);
+            btnDelete.Text = "Delete";
+            btnDelete.UseColumnTextForButtonValue = true;
+
+            grdShowsTable.Columns[0].Visible = false;
+            
         }
 
         private void closeToolStripMenuItem_Click(object sender, EventArgs e)
@@ -45,7 +59,6 @@ namespace HorseShow
         private void btnNewShow_Click(object sender, EventArgs e)
         {
             
-
             frmAddShow showData = new frmAddShow(updateShowsTable);
 
             showData.Show();
@@ -96,6 +109,30 @@ namespace HorseShow
             frmAdminConsole admin = new frmAdminConsole();
 
             admin.Show();
+        }
+
+        private void grdShowsTable_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            //Edit columnIndex is 0
+            //Delete columnIndex is 1
+
+            //get the ShowID (which is in a hidden column) from the Shows table
+            int selectedrowindex = grdShowsTable.SelectedCells[0].RowIndex;
+            DataGridViewRow selectedRow = grdShowsTable.Rows[selectedrowindex];
+            string a = selectedRow.Cells["ID"].Value.ToString();
+
+            //for debug
+            //MessageBox.Show("ShowID to pass is " + a + ", column index is "+e.ColumnIndex);
+
+            if (e.ColumnIndex == 0) //Edit
+            {
+                frmEditShow editShow = new frmEditShow(a);
+                editShow.Show();
+
+            }else if (e.ColumnIndex == 1) //Delete
+            {
+                //delete logic goes here
+            }
         }
     }
 }

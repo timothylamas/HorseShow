@@ -277,11 +277,12 @@ namespace HorseShow
                 var showID = insertShows.ExecuteScalar();
                 int showIDint = Convert.ToInt32(showID);
 
-                foreach (object item in listEvents.Items)
+                //foreach (object item in listEvents.Items)
+                for (int i=0; i < listEvents.Items.Count; i++)
                 {
-                    string eventName = (string)item;
-                    string insertEventsQuery = "insert into Events (EventName, Link2ShowID) values ('" + eventName + "', " + showIDint + ")";
-                    string returnClassesInEventQuery = "select className, entryfee, additionalMoneyAmount from tempClasses where eventIndex = " + listEvents.SelectedIndex;
+                    string eventName = listEvents.Items[i].ToString();
+                    string insertEventsQuery = "insert into Events (EventName, Link2ShowID) values ('" + eventName + "', " + showIDint + ") SELECT SCOPE_IDENTITY()";
+                    string returnClassesInEventQuery = "select className, entryfee, additionalMoneyAmount from tempClasses where eventIndex = " + i;
 
                     SqlConnection events = new SqlConnection(connection);
                     SqlCommand insertEvents = new SqlCommand(insertEventsQuery, events);
@@ -295,9 +296,8 @@ namespace HorseShow
                     {
                         while (reader.Read())
                         {
-
+                            string insertClassesQuery = "insert into Classes (ClassName, Link2EventID) values ('" + reader["className"].ToString() + "', " + eventIDint + ") SELECT SCOPE_IDENTITY()";
                             SqlConnection conn2 = new SqlConnection(connection);
-                            string insertClassesQuery = "insert into Classes (ClassName, Link2EventID) values ('" + reader["className"].ToString() + "', " + eventIDint + ")";
                             SqlCommand insertClasses = new SqlCommand(insertClassesQuery, conn2);
                             conn2.Open();
                             var ClassID = insertClasses.ExecuteScalar();
@@ -312,7 +312,7 @@ namespace HorseShow
             }
 
             //for debug
-            MessageBox.Show("Record added!");
+            //MessageBox.Show("Record added!");
 
             _updateShowsTable(); //for updating the Shows table on the main form
 
