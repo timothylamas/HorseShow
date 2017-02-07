@@ -90,5 +90,12 @@ namespace HorseShow
 
             return dbConnectString;
         }
+
+        private void adminConsoleToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            frmAdminConsole admin = new frmAdminConsole();
+
+            admin.Show();
+        }
     }
 }

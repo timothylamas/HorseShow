@@ -10,3 +10,4 @@ c:\users\apocalypse\documents\visual studio 2015\Projects\HorseShow\HorseShow\ob
 C:\Users\APOCALYPSE\Documents\Visual Studio 2015\Projects\HorseShow\HorseShow\bin\Debug\HorseShowDB.mdf
 C:\Users\APOCALYPSE\Documents\Visual Studio 2015\Projects\HorseShow\HorseShow\bin\Debug\HorseShowDB_log.ldf
 C:\Users\APOCALYPSE\Documents\Visual Studio 2015\Projects\HorseShow\HorseShow\obj\Debug\HorseShow.frmAddShow.resources
+C:\Users\APOCALYPSE\Documents\Visual Studio 2015\Projects\HorseShow\HorseShow\obj\Debug\HorseShow.frmAdminConsole.resources

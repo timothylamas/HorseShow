@@ -67,6 +67,12 @@
     <Compile Include="AddShow.Designer.cs">
       <DependentUpon>AddShow.cs</DependentUpon>
     </Compile>
+    <Compile Include="AdminConsole.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AdminConsole.Designer.cs">
+      <DependentUpon>AdminConsole.cs</DependentUpon>
+    </Compile>
     <Compile Include="dataViewShowsTable.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -87,6 +93,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="AddShow.resx">
       <DependentUpon>AddShow.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AdminConsole.resx">
+      <DependentUpon>AdminConsole.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
