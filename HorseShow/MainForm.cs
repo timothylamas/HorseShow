@@ -23,6 +23,8 @@ namespace HorseShow
             //tabForms.Appearance = TabAppearance.FlatButtons;
             tabForms.ItemSize = new Size(0, 1);
             tabForms.SizeMode = TabSizeMode.Fixed;
+
+            updateShowsTable();
         }
 
         private void closeToolStripMenuItem_Click(object sender, EventArgs e)
@@ -53,12 +55,39 @@ namespace HorseShow
         {
             // TODO: This line of code loads data into the 'dataViewShowsTable.viewShowsTable' table. You can move, or remove it, as needed.
             this.viewShowsTableTableAdapter.Fill(this.dataViewShowsTable.viewShowsTable);
+            // TODO: This line of code loads data into the 'dataViewShowsTable.viewShowsTable' table. You can move, or remove it, as needed.
+            this.viewShowsTableTableAdapter.Fill(this.dataViewShowsTable.viewShowsTable);
 
         }
 
         private void btnRefreshShows_Click(object sender, EventArgs e)
         {
-            grdShowsTable.DataSource = viewShowsTableBindingSource;
+
+            updateShowsTable();
+
+        }
+
+        public static void updateShowsTable()
+        {
+            string connect = getConnectionString();
+            string updateQuery = "select * from viewShowsTable";
+
+            SqlDataAdapter dataAdapter = new SqlDataAdapter(updateQuery, connect);
+
+            SqlCommandBuilder commandBuilder = new SqlCommandBuilder(dataAdapter);
+
+            DataTable table = new DataTable();
+            table.Locale = System.Globalization.CultureInfo.InvariantCulture;
+            dataAdapter.Fill(table);
+
+            grdShowsTable.DataSource = table;
+        }
+
+        public static string getConnectionString()
+        {
+            string dbConnectString = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\HorseShowDB.mdf;Integrated Security=True;Connect Timeout=30";
+
+            return dbConnectString;
         }
     }
 }

@@ -42,31 +42,31 @@
             this.btnNewShow = new System.Windows.Forms.Button();
             this.grpShows = new System.Windows.Forms.GroupBox();
             this.grdShowsTable = new System.Windows.Forms.DataGridView();
+            this.tabHorseRiderEntry = new System.Windows.Forms.TabPage();
+            this.label2 = new System.Windows.Forms.Label();
+            this.stripFooter = new System.Windows.Forms.StatusStrip();
+            this.stripVersionNumber = new System.Windows.Forms.ToolStripStatusLabel();
+            this.horseShowDBDataSet = new HorseShow.HorseShowDBDataSet();
+            this.dataViewShowsTable = new HorseShow.dataViewShowsTable();
+            this.viewShowsTableBindingSource = new System.Windows.Forms.BindingSource(this.components);
+            this.viewShowsTableTableAdapter = new HorseShow.dataViewShowsTableTableAdapters.viewShowsTableTableAdapter();
             this.showProducerDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.showContactDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.showPhoneNumberDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.showDateDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.showLocationDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.showNotesDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.viewShowsTableBindingSource = new System.Windows.Forms.BindingSource(this.components);
-            this.dataViewShowsTable = new HorseShow.dataViewShowsTable();
-            this.tabHorseRiderEntry = new System.Windows.Forms.TabPage();
-            this.label2 = new System.Windows.Forms.Label();
-            this.stripFooter = new System.Windows.Forms.StatusStrip();
-            this.stripVersionNumber = new System.Windows.Forms.ToolStripStatusLabel();
-            this.horseShowDBDataSet = new HorseShow.HorseShowDBDataSet();
-            this.viewShowsTableTableAdapter = new HorseShow.dataViewShowsTableTableAdapters.viewShowsTableTableAdapter();
             this.menuStrip1.SuspendLayout();
             this.toolStripMain.SuspendLayout();
             this.tabForms.SuspendLayout();
             this.tabShows.SuspendLayout();
             this.grpShows.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.grdShowsTable)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.viewShowsTableBindingSource)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dataViewShowsTable)).BeginInit();
             this.tabHorseRiderEntry.SuspendLayout();
             this.stripFooter.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.horseShowDBDataSet)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dataViewShowsTable)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.viewShowsTableBindingSource)).BeginInit();
             this.SuspendLayout();
             // 
             // menuStrip1
@@ -202,63 +202,6 @@
             this.grdShowsTable.Size = new System.Drawing.Size(1219, 451);
             this.grdShowsTable.TabIndex = 0;
             // 
-            // showProducerDataGridViewTextBoxColumn
-            // 
-            this.showProducerDataGridViewTextBoxColumn.DataPropertyName = "ShowProducer";
-            this.showProducerDataGridViewTextBoxColumn.HeaderText = "Show Producer";
-            this.showProducerDataGridViewTextBoxColumn.Name = "showProducerDataGridViewTextBoxColumn";
-            this.showProducerDataGridViewTextBoxColumn.ReadOnly = true;
-            this.showProducerDataGridViewTextBoxColumn.Width = 150;
-            // 
-            // showContactDataGridViewTextBoxColumn
-            // 
-            this.showContactDataGridViewTextBoxColumn.DataPropertyName = "ShowContact";
-            this.showContactDataGridViewTextBoxColumn.HeaderText = "Contact";
-            this.showContactDataGridViewTextBoxColumn.Name = "showContactDataGridViewTextBoxColumn";
-            this.showContactDataGridViewTextBoxColumn.ReadOnly = true;
-            this.showContactDataGridViewTextBoxColumn.Width = 150;
-            // 
-            // showPhoneNumberDataGridViewTextBoxColumn
-            // 
-            this.showPhoneNumberDataGridViewTextBoxColumn.DataPropertyName = "ShowPhoneNumber";
-            this.showPhoneNumberDataGridViewTextBoxColumn.HeaderText = "Phone Number";
-            this.showPhoneNumberDataGridViewTextBoxColumn.Name = "showPhoneNumberDataGridViewTextBoxColumn";
-            this.showPhoneNumberDataGridViewTextBoxColumn.ReadOnly = true;
-            this.showPhoneNumberDataGridViewTextBoxColumn.Width = 150;
-            // 
-            // showDateDataGridViewTextBoxColumn
-            // 
-            this.showDateDataGridViewTextBoxColumn.DataPropertyName = "ShowDate";
-            this.showDateDataGridViewTextBoxColumn.HeaderText = "Date of Show";
-            this.showDateDataGridViewTextBoxColumn.Name = "showDateDataGridViewTextBoxColumn";
-            this.showDateDataGridViewTextBoxColumn.ReadOnly = true;
-            // 
-            // showLocationDataGridViewTextBoxColumn
-            // 
-            this.showLocationDataGridViewTextBoxColumn.DataPropertyName = "ShowLocation";
-            this.showLocationDataGridViewTextBoxColumn.HeaderText = "Location";
-            this.showLocationDataGridViewTextBoxColumn.Name = "showLocationDataGridViewTextBoxColumn";
-            this.showLocationDataGridViewTextBoxColumn.ReadOnly = true;
-            this.showLocationDataGridViewTextBoxColumn.Width = 150;
-            // 
-            // showNotesDataGridViewTextBoxColumn
-            // 
-            this.showNotesDataGridViewTextBoxColumn.DataPropertyName = "ShowNotes";
-            this.showNotesDataGridViewTextBoxColumn.HeaderText = "Notes";
-            this.showNotesDataGridViewTextBoxColumn.Name = "showNotesDataGridViewTextBoxColumn";
-            this.showNotesDataGridViewTextBoxColumn.ReadOnly = true;
-            this.showNotesDataGridViewTextBoxColumn.Width = 300;
-            // 
-            // viewShowsTableBindingSource
-            // 
-            this.viewShowsTableBindingSource.DataMember = "viewShowsTable";
-            this.viewShowsTableBindingSource.DataSource = this.dataViewShowsTable;
-            // 
-            // dataViewShowsTable
-            // 
-            this.dataViewShowsTable.DataSetName = "dataViewShowsTable";
-            this.dataViewShowsTable.SchemaSerializationMode = System.Data.SchemaSerializationMode.IncludeSchema;
-            // 
             // tabHorseRiderEntry
             // 
             this.tabHorseRiderEntry.Controls.Add(this.label2);
@@ -302,9 +245,61 @@
             this.horseShowDBDataSet.DataSetName = "HorseShowDBDataSet";
             this.horseShowDBDataSet.SchemaSerializationMode = System.Data.SchemaSerializationMode.IncludeSchema;
             // 
+            // dataViewShowsTable
+            // 
+            this.dataViewShowsTable.DataSetName = "dataViewShowsTable";
+            this.dataViewShowsTable.SchemaSerializationMode = System.Data.SchemaSerializationMode.IncludeSchema;
+            // 
+            // viewShowsTableBindingSource
+            // 
+            this.viewShowsTableBindingSource.DataMember = "viewShowsTable";
+            this.viewShowsTableBindingSource.DataSource = this.dataViewShowsTable;
+            // 
             // viewShowsTableTableAdapter
             // 
             this.viewShowsTableTableAdapter.ClearBeforeFill = true;
+            // 
+            // showProducerDataGridViewTextBoxColumn
+            // 
+            this.showProducerDataGridViewTextBoxColumn.DataPropertyName = "ShowProducer";
+            this.showProducerDataGridViewTextBoxColumn.HeaderText = "ShowProducer";
+            this.showProducerDataGridViewTextBoxColumn.Name = "showProducerDataGridViewTextBoxColumn";
+            this.showProducerDataGridViewTextBoxColumn.ReadOnly = true;
+            // 
+            // showContactDataGridViewTextBoxColumn
+            // 
+            this.showContactDataGridViewTextBoxColumn.DataPropertyName = "ShowContact";
+            this.showContactDataGridViewTextBoxColumn.HeaderText = "ShowContact";
+            this.showContactDataGridViewTextBoxColumn.Name = "showContactDataGridViewTextBoxColumn";
+            this.showContactDataGridViewTextBoxColumn.ReadOnly = true;
+            // 
+            // showPhoneNumberDataGridViewTextBoxColumn
+            // 
+            this.showPhoneNumberDataGridViewTextBoxColumn.DataPropertyName = "ShowPhoneNumber";
+            this.showPhoneNumberDataGridViewTextBoxColumn.HeaderText = "ShowPhoneNumber";
+            this.showPhoneNumberDataGridViewTextBoxColumn.Name = "showPhoneNumberDataGridViewTextBoxColumn";
+            this.showPhoneNumberDataGridViewTextBoxColumn.ReadOnly = true;
+            // 
+            // showDateDataGridViewTextBoxColumn
+            // 
+            this.showDateDataGridViewTextBoxColumn.DataPropertyName = "ShowDate";
+            this.showDateDataGridViewTextBoxColumn.HeaderText = "ShowDate";
+            this.showDateDataGridViewTextBoxColumn.Name = "showDateDataGridViewTextBoxColumn";
+            this.showDateDataGridViewTextBoxColumn.ReadOnly = true;
+            // 
+            // showLocationDataGridViewTextBoxColumn
+            // 
+            this.showLocationDataGridViewTextBoxColumn.DataPropertyName = "ShowLocation";
+            this.showLocationDataGridViewTextBoxColumn.HeaderText = "ShowLocation";
+            this.showLocationDataGridViewTextBoxColumn.Name = "showLocationDataGridViewTextBoxColumn";
+            this.showLocationDataGridViewTextBoxColumn.ReadOnly = true;
+            // 
+            // showNotesDataGridViewTextBoxColumn
+            // 
+            this.showNotesDataGridViewTextBoxColumn.DataPropertyName = "ShowNotes";
+            this.showNotesDataGridViewTextBoxColumn.HeaderText = "ShowNotes";
+            this.showNotesDataGridViewTextBoxColumn.Name = "showNotesDataGridViewTextBoxColumn";
+            this.showNotesDataGridViewTextBoxColumn.ReadOnly = true;
             // 
             // frmMain
             // 
@@ -329,13 +324,13 @@
             this.tabShows.ResumeLayout(false);
             this.grpShows.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.grdShowsTable)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.viewShowsTableBindingSource)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dataViewShowsTable)).EndInit();
             this.tabHorseRiderEntry.ResumeLayout(false);
             this.tabHorseRiderEntry.PerformLayout();
             this.stripFooter.ResumeLayout(false);
             this.stripFooter.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.horseShowDBDataSet)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dataViewShowsTable)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.viewShowsTableBindingSource)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
