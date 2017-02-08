@@ -145,6 +145,7 @@
             this.listClasses.Size = new System.Drawing.Size(167, 147);
             this.listClasses.TabIndex = 0;
             this.listClasses.TabStop = false;
+            this.listClasses.SelectedValueChanged += new System.EventHandler(this.listClasses_SelectedValueChanged);
             // 
             // btnRemoveClass
             // 
@@ -204,6 +205,7 @@
             this.listEvents.Size = new System.Drawing.Size(167, 147);
             this.listEvents.TabIndex = 0;
             this.listEvents.TabStop = false;
+            this.listEvents.SelectedValueChanged += new System.EventHandler(this.listEvents_SelectedValueChanged);
             // 
             // btnAddEditShowCancel
             // 
@@ -347,6 +349,7 @@
             this.Name = "frmEditShow";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Edit Show";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.frmEditShow_FormClosing);
             this.grpClasses.ResumeLayout(false);
             this.grpClasses.PerformLayout();
             this.grpEvents.ResumeLayout(false);
