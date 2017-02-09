@@ -61,6 +61,7 @@
             this.grdSQLResults.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.grdSQLResults.Location = new System.Drawing.Point(3, 16);
             this.grdSQLResults.Name = "grdSQLResults";
+            this.grdSQLResults.ReadOnly = true;
             this.grdSQLResults.Size = new System.Drawing.Size(1235, 467);
             this.grdSQLResults.TabIndex = 2;
             // 

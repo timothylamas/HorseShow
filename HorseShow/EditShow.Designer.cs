@@ -57,6 +57,9 @@
             this.lblPhoneNumber = new System.Windows.Forms.Label();
             this.lblContactName = new System.Windows.Forms.Label();
             this.lblShowProducer = new System.Windows.Forms.Label();
+            this.btnRenameClass = new System.Windows.Forms.Button();
+            this.btnRenameEvent = new System.Windows.Forms.Button();
+            this.btnSaveMoney = new System.Windows.Forms.Button();
             this.grpClasses.SuspendLayout();
             this.grpEvents.SuspendLayout();
             this.SuspendLayout();
@@ -73,6 +76,8 @@
             // 
             // grpClasses
             // 
+            this.grpClasses.Controls.Add(this.btnSaveMoney);
+            this.grpClasses.Controls.Add(this.btnRenameClass);
             this.grpClasses.Controls.Add(this.txtAdditionalMoney);
             this.grpClasses.Controls.Add(this.txtEntryFee);
             this.grpClasses.Controls.Add(this.lblAdditionalMoney);
@@ -83,7 +88,7 @@
             this.grpClasses.Controls.Add(this.btnRemoveClass);
             this.grpClasses.Location = new System.Drawing.Point(225, 186);
             this.grpClasses.Name = "grpClasses";
-            this.grpClasses.Size = new System.Drawing.Size(277, 203);
+            this.grpClasses.Size = new System.Drawing.Size(277, 231);
             this.grpClasses.TabIndex = 25;
             this.grpClasses.TabStop = false;
             this.grpClasses.Text = "Classes";
@@ -136,6 +141,7 @@
             this.btnAddClass.TabStop = false;
             this.btnAddClass.Text = "+";
             this.btnAddClass.UseVisualStyleBackColor = true;
+            this.btnAddClass.Click += new System.EventHandler(this.btnAddClass_Click);
             // 
             // listClasses
             // 
@@ -156,16 +162,18 @@
             this.btnRemoveClass.TabStop = false;
             this.btnRemoveClass.Text = "-";
             this.btnRemoveClass.UseVisualStyleBackColor = true;
+            this.btnRemoveClass.Click += new System.EventHandler(this.btnRemoveClass_Click);
             // 
             // grpEvents
             // 
+            this.grpEvents.Controls.Add(this.btnRenameEvent);
             this.grpEvents.Controls.Add(this.txtNewEventInput);
             this.grpEvents.Controls.Add(this.btnAddEvent);
             this.grpEvents.Controls.Add(this.btnRemoveEvent);
             this.grpEvents.Controls.Add(this.listEvents);
             this.grpEvents.Location = new System.Drawing.Point(11, 186);
             this.grpEvents.Name = "grpEvents";
-            this.grpEvents.Size = new System.Drawing.Size(177, 203);
+            this.grpEvents.Size = new System.Drawing.Size(177, 231);
             this.grpEvents.TabIndex = 24;
             this.grpEvents.TabStop = false;
             this.grpEvents.Text = "Events";
@@ -186,6 +194,7 @@
             this.btnAddEvent.TabStop = false;
             this.btnAddEvent.Text = "+";
             this.btnAddEvent.UseVisualStyleBackColor = true;
+            this.btnAddEvent.Click += new System.EventHandler(this.btnAddEvent_Click);
             // 
             // btnRemoveEvent
             // 
@@ -196,6 +205,7 @@
             this.btnRemoveEvent.TabStop = false;
             this.btnRemoveEvent.Text = "-";
             this.btnRemoveEvent.UseVisualStyleBackColor = true;
+            this.btnRemoveEvent.Click += new System.EventHandler(this.btnRemoveEvent_Click);
             // 
             // listEvents
             // 
@@ -209,7 +219,7 @@
             // 
             // btnAddEditShowCancel
             // 
-            this.btnAddEditShowCancel.Location = new System.Drawing.Point(315, 405);
+            this.btnAddEditShowCancel.Location = new System.Drawing.Point(311, 438);
             this.btnAddEditShowCancel.Name = "btnAddEditShowCancel";
             this.btnAddEditShowCancel.Size = new System.Drawing.Size(87, 23);
             this.btnAddEditShowCancel.TabIndex = 23;
@@ -219,12 +229,13 @@
             // 
             // btnAddEditShowSaveChanges
             // 
-            this.btnAddEditShowSaveChanges.Location = new System.Drawing.Point(17, 405);
+            this.btnAddEditShowSaveChanges.Location = new System.Drawing.Point(17, 438);
             this.btnAddEditShowSaveChanges.Name = "btnAddEditShowSaveChanges";
             this.btnAddEditShowSaveChanges.Size = new System.Drawing.Size(87, 23);
             this.btnAddEditShowSaveChanges.TabIndex = 22;
             this.btnAddEditShowSaveChanges.Text = "Save Changes";
             this.btnAddEditShowSaveChanges.UseVisualStyleBackColor = true;
+            this.btnAddEditShowSaveChanges.Click += new System.EventHandler(this.btnAddEditShowSaveChanges_Click);
             // 
             // dateShowDate
             // 
@@ -322,11 +333,40 @@
             this.lblShowProducer.TabIndex = 9;
             this.lblShowProducer.Text = "Show Producer:";
             // 
+            // btnRenameClass
+            // 
+            this.btnRenameClass.Location = new System.Drawing.Point(7, 200);
+            this.btnRenameClass.Name = "btnRenameClass";
+            this.btnRenameClass.Size = new System.Drawing.Size(75, 23);
+            this.btnRenameClass.TabIndex = 5;
+            this.btnRenameClass.Text = "Rename";
+            this.btnRenameClass.UseVisualStyleBackColor = true;
+            this.btnRenameClass.Click += new System.EventHandler(this.btnRenameClass_Click);
+            // 
+            // btnRenameEvent
+            // 
+            this.btnRenameEvent.Location = new System.Drawing.Point(4, 199);
+            this.btnRenameEvent.Name = "btnRenameEvent";
+            this.btnRenameEvent.Size = new System.Drawing.Size(75, 23);
+            this.btnRenameEvent.TabIndex = 5;
+            this.btnRenameEvent.Text = "Rename";
+            this.btnRenameEvent.UseVisualStyleBackColor = true;
+            this.btnRenameEvent.Click += new System.EventHandler(this.btnRenameEvent_Click);
+            // 
+            // btnSaveMoney
+            // 
+            this.btnSaveMoney.Location = new System.Drawing.Point(215, 110);
+            this.btnSaveMoney.Name = "btnSaveMoney";
+            this.btnSaveMoney.Size = new System.Drawing.Size(40, 23);
+            this.btnSaveMoney.TabIndex = 6;
+            this.btnSaveMoney.Text = "Save";
+            this.btnSaveMoney.UseVisualStyleBackColor = true;
+            // 
             // frmEditShow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(518, 446);
+            this.ClientSize = new System.Drawing.Size(518, 471);
             this.Controls.Add(this.lblHiddenValue);
             this.Controls.Add(this.grpClasses);
             this.Controls.Add(this.grpEvents);
@@ -390,5 +430,8 @@
         private System.Windows.Forms.Label lblPhoneNumber;
         private System.Windows.Forms.Label lblContactName;
         private System.Windows.Forms.Label lblShowProducer;
+        private System.Windows.Forms.Button btnSaveMoney;
+        private System.Windows.Forms.Button btnRenameClass;
+        private System.Windows.Forms.Button btnRenameEvent;
     }
 }

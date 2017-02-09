@@ -22,8 +22,8 @@ namespace HorseShow
 
             //Create the tempClasses and tempEvents DB so we can load the Event/Class structure into it. 
             string dbConnectString = getConnectionString();
-            string createTempClassesQuery = "create table tempClasses (eventIndex int, link2eventID int, className varchar(50), classIndex int, entryfee float, additionalMoneyAmount float)";
-            string createTempEventsQuery = "create table tempEvents (eventIndex int, eventID int, eventName varchar(50))";
+            string createTempClassesQuery = "create table tempClasses (eventIndex int, link2eventID int, className varchar(50), classIndex int, classID int, entryfee float, additionalMoneyAmount float, deleted int)";
+            string createTempEventsQuery = "create table tempEvents (eventIndex int, eventID int, eventName varchar(50), deleted int)";
             string retreiveShowsQuery = "select showproducer, showcontact, showphonenumber, showdate, showlocation, shownotes from Shows where showID = " + showIDValue;
             string retreiveEventsQuery = "select eventid, eventname from events where link2showID = " + showIDValue;
 
@@ -84,7 +84,7 @@ namespace HorseShow
                     int c = 0;
                     while (readEvents.Read())
                     {
-                        string insertTempEventQuery = "insert into tempEvents (eventindex, eventID, eventname) values (" + i + ", " + readEvents["eventID"].ToString() + ", '" + readEvents["eventName"].ToString() + "')";
+                        string insertTempEventQuery = "insert into tempEvents (eventindex, eventID, eventname, deleted) values (" + i + ", " + readEvents["eventID"].ToString() + ", '" + readEvents["eventName"].ToString() + "', 0)";
                         SqlCommand insertTempEvent = new SqlCommand(insertTempEventQuery, connect);
                         insertTempEvent.ExecuteNonQuery();
                         listEvents.Items.Add(readEvents["eventName"].ToString());
@@ -102,7 +102,7 @@ namespace HorseShow
                                 while (readClasses.Read())
                                 {
                                     string classID = readClasses["classID"].ToString();
-                                    string insertTempClassesQuery = "insert into tempClasses (eventIndex, link2eventID, className, classIndex) values (" + i + ", " + readClasses["link2eventID"].ToString() + ", '" + readClasses["className"].ToString() + "', " + c + ")";
+                                    string insertTempClassesQuery = "insert into tempClasses (eventIndex, link2eventID, className, classIndex, classID, deleted) values (" + i + ", " + readClasses["link2eventID"].ToString() + ", '" + readClasses["className"].ToString() + "', " + c + ", "+readClasses["classID"].ToString()+ ", 0)";
                                     SqlCommand insertTempClass = new SqlCommand(insertTempClassesQuery, classConn);
                                     insertTempClass.ExecuteNonQuery();
 
@@ -147,7 +147,7 @@ namespace HorseShow
             //Call this function any time the Class listview needs to be updated. 
             int selectedEventIndex = listEvents.SelectedIndex;
             string connection = getConnectionString();
-            string classListView = "select className from tempClasses where eventIndex = " + selectedEventIndex;
+            string classListView = "select className from tempClasses where deleted = 0 and eventIndex = " + selectedEventIndex;
 
 
             listClasses.Items.Clear();
@@ -161,6 +161,28 @@ namespace HorseShow
                     while (reader.Read())
                     {
                         listClasses.Items.Add(reader["className"].ToString());
+                    }
+                }
+            }
+        }
+
+        public void updateEventsList()
+        {
+            string showID = lblHiddenValue.Text;
+            string connection = getConnectionString();
+            string eventListview = "select eventname from tempEvents where deleted = 0";
+
+            listEvents.Items.Clear();
+
+            using (SqlConnection conn = new SqlConnection(connection))
+            {
+                SqlCommand getEventsList = new SqlCommand(eventListview, conn);
+                conn.Open();
+                using (SqlDataReader readEvents = getEventsList.ExecuteReader())
+                {
+                    while (readEvents.Read())
+                    {
+                        listEvents.Items.Add(readEvents["eventName"].ToString());
                     }
                 }
             }
@@ -199,125 +221,320 @@ namespace HorseShow
         private void listClasses_SelectedValueChanged(object sender, EventArgs e)
         {
             int eventIndex = listEvents.SelectedIndex;
-            string className = listClasses.SelectedItem.ToString();
             string connection = getConnectionString();
-            string getMoneyQuery = "select entryFee, additionalMoneyAmount from tempClasses where className = '" + className + "' and eventIndex = " + eventIndex;
-
+            
             //populate the entry fees and additional money
 
-            txtEntryFee.Text = "";
-            txtAdditionalMoney.Text = "";
-
-            using (SqlConnection conn = new SqlConnection(connection))
+            if (listClasses.SelectedIndex != -1)
             {
-                conn.Open();
-                SqlCommand getMoney = new SqlCommand(getMoneyQuery, conn);
-                getMoney.ExecuteNonQuery();
+                string className = listClasses.SelectedItem.ToString();
+                string getMoneyQuery = "select entryFee, additionalMoneyAmount from tempClasses where className = '" + className + "' and eventIndex = " + eventIndex;
 
-                using (SqlDataReader reader = getMoney.ExecuteReader())
+                txtEntryFee.Text = "";
+                txtAdditionalMoney.Text = "";
+
+                using (SqlConnection conn = new SqlConnection(connection))
                 {
-                    while (reader.Read())
+                    conn.Open();
+                    SqlCommand getMoney = new SqlCommand(getMoneyQuery, conn);
+                    getMoney.ExecuteNonQuery();
+
+                    using (SqlDataReader reader = getMoney.ExecuteReader())
                     {
-                        txtAdditionalMoney.Text = (reader["additionalMoneyAmount"].ToString());
-                        txtEntryFee.Text = (reader["entryFee"].ToString());
-                    }
-                }
-            }
-        }
-
-        private void reInitializeLists()
-        {
-            string showIDValue = lblHiddenValue.Text; //setting the ShowID from what was passed in from the main form
-
-            //Create the tempClasses and tempEvents DB so we can load the Event/Class structure into it. 
-            string dbConnectString = getConnectionString();
-            string createTempClassesQuery = "create table tempClasses (eventIndex int, link2eventID int, className varchar(50), classIndex int, entryfee float, additionalMoneyAmount float)";
-            string createTempEventsQuery = "create table tempEvents (eventIndex int, eventID int, eventName varchar(50))";
-            string retreiveShowsQuery = "select showproducer, showcontact, showphonenumber, showdate, showlocation, shownotes from Shows where showID = " + showIDValue;
-            string retreiveEventsQuery = "select eventid, eventname from events where link2showID = " + showIDValue;
-
-            listEvents.Items.Clear();
-            listClasses.Items.Clear();
-
-            using (SqlConnection conn = new SqlConnection(dbConnectString))
-            {
-                conn.Open();
-
-                SqlCommand removeClassesTemp = new SqlCommand("IF OBJECT_ID('tempClasses') IS NOT NULL DROP TABLE tempClasses", conn);
-                removeClassesTemp.ExecuteNonQuery();
-
-                SqlCommand createTempClassesTable = new SqlCommand(createTempClassesQuery, conn);
-                createTempClassesTable.ExecuteNonQuery();
-
-                SqlCommand removeEventsTemp = new SqlCommand("IF OBJECT_ID('tempEvents') IS NOT NULL DROP TABLE tempEvents", conn);
-                removeEventsTemp.ExecuteNonQuery();
-
-                SqlCommand createTempEventsTable = new SqlCommand(createTempEventsQuery, conn);
-                createTempEventsTable.ExecuteNonQuery();
-            }
-
-            using (SqlConnection connect = new SqlConnection(dbConnectString))
-            {
-                //get the events
-                SqlCommand getEvents = new SqlCommand(retreiveEventsQuery, connect);
-                connect.Open();
-                using (SqlDataReader readEvents = getEvents.ExecuteReader())
-                {
-                    int i = 0;
-                    int c = 0;
-                    while (readEvents.Read())
-                    {
-                        string insertTempEventQuery = "insert into tempEvents (eventindex, eventID, eventname) values (" + i + ", " + readEvents["eventID"].ToString() + ", '" + readEvents["eventName"].ToString() + "')";
-                        SqlCommand insertTempEvent = new SqlCommand(insertTempEventQuery, connect);
-                        insertTempEvent.ExecuteNonQuery();
-                        listEvents.Items.Add(readEvents["eventName"].ToString());
-
-                        string eventID = readEvents["eventID"].ToString();
-                        string retreiveClassesQuery = "select classid, classname, link2eventID from classes where link2eventID = " + eventID;
-
-                        //now get the Classes for each EventID
-                        using (SqlConnection classConn = new SqlConnection(dbConnectString))
+                        while (reader.Read())
                         {
-                            SqlCommand getClasses = new SqlCommand(retreiveClassesQuery, classConn);
-                            classConn.Open();
-                            using (SqlDataReader readClasses = getClasses.ExecuteReader())
-                            {
-                                while (readClasses.Read())
-                                {
-                                    string classID = readClasses["classID"].ToString();
-                                    string insertTempClassesQuery = "insert into tempClasses (eventIndex, link2eventID, className, classIndex) values (" + i + ", " + readClasses["link2eventID"].ToString() + ", '" + readClasses["className"].ToString() + "', " + c + ")";
-                                    SqlCommand insertTempClass = new SqlCommand(insertTempClassesQuery, classConn);
-                                    insertTempClass.ExecuteNonQuery();
-
-                                    //now get EventMoney records for each event + class
-                                    using (SqlConnection getMoney = new SqlConnection(dbConnectString))
-                                    {
-                                        string getEventMoneyQuery = "select entryfee, additionalmoneyamount from eventmoney where link2eventID = " + eventID + " and link2classID = " + classID;
-                                        SqlCommand getEventMoney = new SqlCommand(getEventMoneyQuery, getMoney);
-                                        getMoney.Open();
-                                        using (SqlDataReader readMoney = getEventMoney.ExecuteReader())
-                                        {
-                                            while (readMoney.Read())
-                                            {
-                                                string updateTempClassesQuery = "update tempclasses set entryfee = " + readMoney["entryfee"].ToString() + ", additionalmoneyamount = " + readMoney["additionalmoneyamount"].ToString() + " where classIndex = " + c + " and eventindex = " + i;
-                                                SqlCommand updateTempClasses = new SqlCommand(updateTempClassesQuery, getMoney);
-                                                updateTempClasses.ExecuteNonQuery();
-                                            }
-                                        }
-
-                                    }
-                                    //increment Class Index
-                                    c++;
-                                }
-                            }
-                            //increment Event Index
-                            i++;
+                            txtAdditionalMoney.Text = (reader["additionalMoneyAmount"].ToString());
+                            txtEntryFee.Text = (reader["entryFee"].ToString());
                         }
                     }
                 }
             }
-
-            updateClassList();
         }
+
+        private void btnAddEditShowSaveChanges_Click(object sender, EventArgs e)
+        {
+            //Thoughts: A stored procedure that will compare records between the Events and tempEvents databases, with logic to decide if an event needs to be added, removed, or renamed.
+            //          It will need to iterate through the classes and do the same for those, updating entryfee and additionalmoneyamount as it goes. 
+        }
+
+        private void btnAddEvent_Click(object sender, EventArgs e)
+        {
+            string connection = getConnectionString();
+            string newEventName = txtNewEventInput.Text;
+            int eventIndex = listEvents.Items.Count;
+            string insertEventsTempQuery = "insert into tempEvents (eventindex, eventID, eventname, deleted) values (" + eventIndex + ", -1, '" + newEventName + "', 0)";
+            //using -1 as the eventID to identify it as a new record
+
+
+            if (newEventName == "")
+            {
+                //do nothing
+            }
+            else
+            {
+                using (SqlConnection conn = new SqlConnection(connection))
+                {
+                    SqlCommand insertEventsTemp = new SqlCommand(insertEventsTempQuery, conn);
+                    conn.Open();
+                    insertEventsTemp.ExecuteNonQuery();
+                    listEvents.Items.Add(newEventName);
+                }
+
+                updateEventsList();
+            }
+        }
+
+        private void btnRemoveEvent_Click(object sender, EventArgs e)
+        {
+            //Thoughts: when an Event is removed from the list we need to set the Deleted flag = 1. 
+            //Then for every eventIndex afterward for all the indexes of a higher number than the deleted index we reduce them by 1, and do the same for all 
+            //tempClass records too. 
+
+            //TODO: Need to check to see if that EventID has any Horse/Rider records related to it and if so prevent event deletion!
+
+            string connection = getConnectionString();
+            int selectedIndex = listEvents.SelectedIndex;
+            string deleteEventQuery = "update tempevents set deleted = 1 where eventIndex = " + selectedIndex;
+            string deleteRelatedClassesQuery = "update tempClasses set deleted = 1 where eventIndex = " + selectedIndex;
+            string updateEventsIndexesQuery = "update tempEvents set eventIndex = eventIndex - 1 where deleted = 0 and eventIndex > " + selectedIndex;
+            string updateClassIndexesQuery = "update tempClasses set eventIndex = eventIndex - 1 where deleted = 0 and eventIndex > " + selectedIndex;
+
+            if (selectedIndex != -1)
+            {
+                using (SqlConnection conn = new SqlConnection(connection))
+                {
+                    SqlCommand deleteEvent = new SqlCommand(deleteEventQuery, conn);
+                    SqlCommand deleteRelatedClasses = new SqlCommand(deleteRelatedClassesQuery, conn);
+                    SqlCommand updateEventsIndexes = new SqlCommand(updateEventsIndexesQuery, conn);
+                    SqlCommand updateClassIndexes = new SqlCommand(updateClassIndexesQuery, conn);
+                    conn.Open();
+                    deleteEvent.ExecuteNonQuery();
+                    deleteRelatedClasses.ExecuteNonQuery();
+                    updateEventsIndexes.ExecuteNonQuery();
+                    updateClassIndexes.ExecuteNonQuery();
+                }
+
+                updateEventsList();
+                updateClassList();
+
+                txtNewEventInput.Text = "";
+            }
+        }
+
+        private void btnRenameEvent_Click(object sender, EventArgs e)
+        {
+            string connection = getConnectionString();
+            int selectedIndex = listEvents.SelectedIndex;
+            string newEventName = txtNewEventInput.Text;
+            string updateEventNameQuery = "update tempEvents set eventName = '" + newEventName + "' where eventIndex = " + selectedIndex;
+
+            using (SqlConnection conn = new SqlConnection(connection))
+            {
+                SqlCommand updateEventName = new SqlCommand(updateEventNameQuery, conn);
+                conn.Open();
+                updateEventName.ExecuteNonQuery();
+            }
+
+            updateEventsList();
+
+        }
+
+        private void btnAddClass_Click(object sender, EventArgs e)
+        {
+            string newClass = txtNewClassInput.Text;
+            int selectedEventIndex = listEvents.SelectedIndex;
+            string connection = getConnectionString();
+            string classListView = "select className from tempClasses where eventIndex = " + selectedEventIndex;
+            int val;
+
+            if (listEvents.Items.Count == 0)
+            {
+                MessageBox.Show("Please add an Event first!");
+            }
+            else if (newClass == "")
+            {
+                //do nothing
+            }
+            else if (listEvents.SelectedIndex == -1)
+            {
+                MessageBox.Show("Please select an Event for this Class.");
+            }
+            else if (!(int.TryParse(txtAdditionalMoney.Text, out val)) || !(int.TryParse(txtEntryFee.Text, out val)))
+            {
+                MessageBox.Show("Please enter a number for EntryFee and AdditionalMoney for the new class.");
+                txtEntryFee.Text = "";
+                txtAdditionalMoney.Text = "";
+            }
+            else
+            {
+                string insertClassQuery = "insert into tempClasses (eventIndex, className, entryfee, additionalMoneyAmount, classID, deleted) values (" + selectedEventIndex + ", '" + newClass + "', " + txtEntryFee.Text + ", " + txtAdditionalMoney.Text + ",-1,0)";
+                //using -1 to indicate new class record
+
+                using (SqlConnection conn = new SqlConnection(connection))
+                {
+                    conn.Open();
+                    SqlCommand insertClass = new SqlCommand(insertClassQuery);
+                    insertClass.Connection = conn;
+                    insertClass.ExecuteNonQuery();
+
+                    SqlCommand sqlListClasses = new SqlCommand(classListView, conn);
+
+                    listClasses.Items.Clear();
+
+                    using (SqlDataReader reader = sqlListClasses.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            listClasses.Items.Add(reader["className"].ToString());
+                        }
+                    }
+                }
+
+                txtNewClassInput.Text = "";
+                updateClassList();
+            }
+        }
+
+        private void btnRemoveClass_Click(object sender, EventArgs e)
+        {
+            int eventIndexForClassToDelete = listEvents.SelectedIndex;
+            string connection = getConnectionString();
+
+            //for debug
+            //MessageBox.Show("Going to delete " + classNameToDelete + "with eventIndex of " + eventIndexForClassToDelete);
+            if (listClasses.SelectedIndex != -1)
+            {
+                string classNameToDelete = listClasses.SelectedItem.ToString();
+                string deleteClassFromTempClass = "update tempClasses set deleted = 1 where className = '" + classNameToDelete + "' and eventIndex = " + eventIndexForClassToDelete;
+
+                using (SqlConnection conn = new SqlConnection(connection))
+                {
+                    conn.Open();
+                    SqlCommand deleteClass = new SqlCommand(deleteClassFromTempClass, conn);
+                    deleteClass.ExecuteNonQuery();
+                }
+
+                updateClassList();
+            }
+
+        }
+
+        private void btnRenameClass_Click(object sender, EventArgs e)
+        {
+            string connection = getConnectionString();
+            int eventIndex = listEvents.SelectedIndex;
+
+            if (listClasses.SelectedIndex != -1)
+            {
+                string className = listClasses.SelectedItem.ToString();
+                string newClassName = txtNewClassInput.Text;
+                string renameClassQuery = "update tempClasses set className = '" + newClassName + "' where classname = '" + className + "' and eventIndex = " + eventIndex;
+
+                using (SqlConnection conn = new SqlConnection(connection))
+                {
+                    SqlCommand renameClass = new SqlCommand(renameClassQuery, conn);
+                    conn.Open();
+                    renameClass.ExecuteNonQuery();
+                }
+
+                txtNewClassInput.Text = "";
+                updateClassList();
+            }
+        }
+
+        //private void reInitializeLists()
+        //{
+        //    string showIDValue = lblHiddenValue.Text; //setting the ShowID from what was passed in from the main form
+
+        //    //Create the tempClasses and tempEvents DB so we can load the Event/Class structure into it. 
+        //    string dbConnectString = getConnectionString();
+        //    string createTempClassesQuery = "create table tempClasses (eventIndex int, link2eventID int, className varchar(50), classIndex int, entryfee float, additionalMoneyAmount float)";
+        //    string createTempEventsQuery = "create table tempEvents (eventIndex int, eventID int, eventName varchar(50))";
+        //    string retreiveShowsQuery = "select showproducer, showcontact, showphonenumber, showdate, showlocation, shownotes from Shows where showID = " + showIDValue;
+        //    string retreiveEventsQuery = "select eventid, eventname from events where link2showID = " + showIDValue;
+
+        //    listEvents.Items.Clear();
+        //    listClasses.Items.Clear();
+
+        //    using (SqlConnection conn = new SqlConnection(dbConnectString))
+        //    {
+        //        conn.Open();
+
+        //        SqlCommand removeClassesTemp = new SqlCommand("IF OBJECT_ID('tempClasses') IS NOT NULL DROP TABLE tempClasses", conn);
+        //        removeClassesTemp.ExecuteNonQuery();
+
+        //        SqlCommand createTempClassesTable = new SqlCommand(createTempClassesQuery, conn);
+        //        createTempClassesTable.ExecuteNonQuery();
+
+        //        SqlCommand removeEventsTemp = new SqlCommand("IF OBJECT_ID('tempEvents') IS NOT NULL DROP TABLE tempEvents", conn);
+        //        removeEventsTemp.ExecuteNonQuery();
+
+        //        SqlCommand createTempEventsTable = new SqlCommand(createTempEventsQuery, conn);
+        //        createTempEventsTable.ExecuteNonQuery();
+        //    }
+
+        //    using (SqlConnection connect = new SqlConnection(dbConnectString))
+        //    {
+        //        //get the events
+        //        SqlCommand getEvents = new SqlCommand(retreiveEventsQuery, connect);
+        //        connect.Open();
+        //        using (SqlDataReader readEvents = getEvents.ExecuteReader())
+        //        {
+        //            int i = 0;
+        //            int c = 0;
+        //            while (readEvents.Read())
+        //            {
+        //                string insertTempEventQuery = "insert into tempEvents (eventindex, eventID, eventname) values (" + i + ", " + readEvents["eventID"].ToString() + ", '" + readEvents["eventName"].ToString() + "')";
+        //                SqlCommand insertTempEvent = new SqlCommand(insertTempEventQuery, connect);
+        //                insertTempEvent.ExecuteNonQuery();
+        //                listEvents.Items.Add(readEvents["eventName"].ToString());
+
+        //                string eventID = readEvents["eventID"].ToString();
+        //                string retreiveClassesQuery = "select classid, classname, link2eventID from classes where link2eventID = " + eventID;
+
+        //                //now get the Classes for each EventID
+        //                using (SqlConnection classConn = new SqlConnection(dbConnectString))
+        //                {
+        //                    SqlCommand getClasses = new SqlCommand(retreiveClassesQuery, classConn);
+        //                    classConn.Open();
+        //                    using (SqlDataReader readClasses = getClasses.ExecuteReader())
+        //                    {
+        //                        while (readClasses.Read())
+        //                        {
+        //                            string classID = readClasses["classID"].ToString();
+        //                            string insertTempClassesQuery = "insert into tempClasses (eventIndex, link2eventID, className, classIndex) values (" + i + ", " + readClasses["link2eventID"].ToString() + ", '" + readClasses["className"].ToString() + "', " + c + ")";
+        //                            SqlCommand insertTempClass = new SqlCommand(insertTempClassesQuery, classConn);
+        //                            insertTempClass.ExecuteNonQuery();
+
+        //                            //now get EventMoney records for each event + class
+        //                            using (SqlConnection getMoney = new SqlConnection(dbConnectString))
+        //                            {
+        //                                string getEventMoneyQuery = "select entryfee, additionalmoneyamount from eventmoney where link2eventID = " + eventID + " and link2classID = " + classID;
+        //                                SqlCommand getEventMoney = new SqlCommand(getEventMoneyQuery, getMoney);
+        //                                getMoney.Open();
+        //                                using (SqlDataReader readMoney = getEventMoney.ExecuteReader())
+        //                                {
+        //                                    while (readMoney.Read())
+        //                                    {
+        //                                        string updateTempClassesQuery = "update tempclasses set entryfee = " + readMoney["entryfee"].ToString() + ", additionalmoneyamount = " + readMoney["additionalmoneyamount"].ToString() + " where classIndex = " + c + " and eventindex = " + i;
+        //                                        SqlCommand updateTempClasses = new SqlCommand(updateTempClassesQuery, getMoney);
+        //                                        updateTempClasses.ExecuteNonQuery();
+        //                                    }
+        //                                }
+
+        //                            }
+        //                            //increment Class Index
+        //                            c++;
+        //                        }
+        //                    }
+        //                    //increment Event Index
+        //                    i++;
+        //                }
+        //            }
+        //        }
+        //    }
+
+        //    updateClassList();
+        //}
     }
 }

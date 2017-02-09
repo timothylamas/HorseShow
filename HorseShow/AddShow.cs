@@ -138,30 +138,34 @@ namespace HorseShow
         private void listClasses_SelectedValueChanged(object sender, EventArgs e)
         {
             int eventIndex = listEvents.SelectedIndex;
-            string className = listClasses.SelectedItem.ToString();
             string connection = getConnectionString();
-            string getMoneyQuery = "select entryFee, additionalMoneyAmount from tempClasses where className = '" + className + "' and eventIndex = " + eventIndex;
 
             //populate the entry fees and additional money
 
-            txtEntryFee.Text = "";
-            txtAdditionalMoney.Text = "";
-
-            using (SqlConnection conn = new SqlConnection(connection))
+            if (listClasses.SelectedIndex != -1)
             {
-                conn.Open();
-                SqlCommand getMoney = new SqlCommand(getMoneyQuery, conn);
-                getMoney.ExecuteNonQuery();
+                string className = listClasses.SelectedItem.ToString();
+                string getMoneyQuery = "select entryFee, additionalMoneyAmount from tempClasses where className = '" + className + "' and eventIndex = " + eventIndex;
 
-                using (SqlDataReader reader = getMoney.ExecuteReader())
+                txtEntryFee.Text = "";
+                txtAdditionalMoney.Text = "";
+
+                using (SqlConnection conn = new SqlConnection(connection))
                 {
-                    while (reader.Read())
-                    {
-                        txtAdditionalMoney.Text = (reader["additionalMoneyAmount"].ToString());
-                        txtEntryFee.Text = (reader["entryFee"].ToString());
-                    }
-                }
+                    conn.Open();
+                    SqlCommand getMoney = new SqlCommand(getMoneyQuery, conn);
+                    getMoney.ExecuteNonQuery();
 
+                    using (SqlDataReader reader = getMoney.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            txtAdditionalMoney.Text = (reader["additionalMoneyAmount"].ToString());
+                            txtEntryFee.Text = (reader["entryFee"].ToString());
+                        }
+                    }
+
+                }
             }
         }
 
@@ -175,38 +179,46 @@ namespace HorseShow
             string deleteClassesFromRemovedEvent = "delete from tempClasses where eventIndex = " + eventToDeleteIndex;
             string classTempUpdateQuery = "update tempClasses set eventIndex = (eventIndex - 1) where eventIndex > " + eventToDeleteIndex;
 
-            listEvents.Items.RemoveAt(eventToDeleteIndex);
-
-            using (SqlConnection conn = new SqlConnection(connection))
+            if (listEvents.SelectedIndex != -1)
             {
-                conn.Open();
-                SqlCommand updateClassTemp = new SqlCommand(classTempUpdateQuery, conn);
-                SqlCommand deleteClassTemp = new SqlCommand(deleteClassesFromRemovedEvent, conn);
-                deleteClassTemp.ExecuteNonQuery();
-                updateClassTemp.ExecuteNonQuery();
-            }
+                listEvents.Items.RemoveAt(eventToDeleteIndex);
 
-            updateClassList();
+                using (SqlConnection conn = new SqlConnection(connection))
+                {
+                    conn.Open();
+                    SqlCommand updateClassTemp = new SqlCommand(classTempUpdateQuery, conn);
+                    SqlCommand deleteClassTemp = new SqlCommand(deleteClassesFromRemovedEvent, conn);
+                    deleteClassTemp.ExecuteNonQuery();
+                    updateClassTemp.ExecuteNonQuery();
+                }
+
+                updateClassList();
+            }
+            
         }
 
         private void btnRemoveClass_Click(object sender, EventArgs e)
         {
             int eventIndexForClassToDelete = listEvents.SelectedIndex;
-            string classNameToDelete = listClasses.SelectedItem.ToString();
             string connection = getConnectionString();
-            string deleteClassFromTempClass = "delete from tempClasses where className = '" + classNameToDelete + "' and eventIndex = " + eventIndexForClassToDelete;
+            
 
             //for debug
             //MessageBox.Show("Going to delete " + classNameToDelete + "with eventIndex of " + eventIndexForClassToDelete);
-
-            using (SqlConnection conn = new SqlConnection(connection))
+            if (listClasses.SelectedIndex != -1)
             {
-                conn.Open();
-                SqlCommand deleteClass = new SqlCommand(deleteClassFromTempClass, conn);
-                deleteClass.ExecuteNonQuery();
-            }
+                string classNameToDelete = listClasses.SelectedItem.ToString();
+                string deleteClassFromTempClass = "delete from tempClasses where className = '" + classNameToDelete + "' and eventIndex = " + eventIndexForClassToDelete;
 
-            updateClassList();
+                using (SqlConnection conn = new SqlConnection(connection))
+                {
+                    conn.Open();
+                    SqlCommand deleteClass = new SqlCommand(deleteClassFromTempClass, conn);
+                    deleteClass.ExecuteNonQuery();
+                }
+
+                updateClassList();
+            }
         }
 
         private void frmAddShow_FormClosing(object sender, FormClosingEventArgs e)
