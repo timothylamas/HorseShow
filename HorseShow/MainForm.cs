@@ -126,7 +126,7 @@ namespace HorseShow
 
             if (e.ColumnIndex == 0) //Edit
             {
-                frmEditShow editShow = new frmEditShow(a);
+                frmEditShow editShow = new frmEditShow(a, updateShowsTable);
                 editShow.Show();
 
             }else if (e.ColumnIndex == 1) //Delete

@@ -30,6 +30,8 @@
         {
             this.lblHiddenValue = new System.Windows.Forms.Label();
             this.grpClasses = new System.Windows.Forms.GroupBox();
+            this.btnSaveMoney = new System.Windows.Forms.Button();
+            this.btnRenameClass = new System.Windows.Forms.Button();
             this.txtAdditionalMoney = new System.Windows.Forms.TextBox();
             this.txtEntryFee = new System.Windows.Forms.TextBox();
             this.lblAdditionalMoney = new System.Windows.Forms.Label();
@@ -39,6 +41,7 @@
             this.listClasses = new System.Windows.Forms.ListBox();
             this.btnRemoveClass = new System.Windows.Forms.Button();
             this.grpEvents = new System.Windows.Forms.GroupBox();
+            this.btnRenameEvent = new System.Windows.Forms.Button();
             this.txtNewEventInput = new System.Windows.Forms.TextBox();
             this.btnAddEvent = new System.Windows.Forms.Button();
             this.btnRemoveEvent = new System.Windows.Forms.Button();
@@ -57,9 +60,6 @@
             this.lblPhoneNumber = new System.Windows.Forms.Label();
             this.lblContactName = new System.Windows.Forms.Label();
             this.lblShowProducer = new System.Windows.Forms.Label();
-            this.btnRenameClass = new System.Windows.Forms.Button();
-            this.btnRenameEvent = new System.Windows.Forms.Button();
-            this.btnSaveMoney = new System.Windows.Forms.Button();
             this.grpClasses.SuspendLayout();
             this.grpEvents.SuspendLayout();
             this.SuspendLayout();
@@ -92,6 +92,26 @@
             this.grpClasses.TabIndex = 25;
             this.grpClasses.TabStop = false;
             this.grpClasses.Text = "Classes";
+            // 
+            // btnSaveMoney
+            // 
+            this.btnSaveMoney.Location = new System.Drawing.Point(215, 110);
+            this.btnSaveMoney.Name = "btnSaveMoney";
+            this.btnSaveMoney.Size = new System.Drawing.Size(40, 23);
+            this.btnSaveMoney.TabIndex = 6;
+            this.btnSaveMoney.Text = "Save";
+            this.btnSaveMoney.UseVisualStyleBackColor = true;
+            this.btnSaveMoney.Click += new System.EventHandler(this.btnSaveMoney_Click);
+            // 
+            // btnRenameClass
+            // 
+            this.btnRenameClass.Location = new System.Drawing.Point(7, 200);
+            this.btnRenameClass.Name = "btnRenameClass";
+            this.btnRenameClass.Size = new System.Drawing.Size(75, 23);
+            this.btnRenameClass.TabIndex = 5;
+            this.btnRenameClass.Text = "Rename";
+            this.btnRenameClass.UseVisualStyleBackColor = true;
+            this.btnRenameClass.Click += new System.EventHandler(this.btnRenameClass_Click);
             // 
             // txtAdditionalMoney
             // 
@@ -177,6 +197,16 @@
             this.grpEvents.TabIndex = 24;
             this.grpEvents.TabStop = false;
             this.grpEvents.Text = "Events";
+            // 
+            // btnRenameEvent
+            // 
+            this.btnRenameEvent.Location = new System.Drawing.Point(4, 199);
+            this.btnRenameEvent.Name = "btnRenameEvent";
+            this.btnRenameEvent.Size = new System.Drawing.Size(75, 23);
+            this.btnRenameEvent.TabIndex = 5;
+            this.btnRenameEvent.Text = "Rename";
+            this.btnRenameEvent.UseVisualStyleBackColor = true;
+            this.btnRenameEvent.Click += new System.EventHandler(this.btnRenameEvent_Click);
             // 
             // txtNewEventInput
             // 
@@ -332,35 +362,6 @@
             this.lblShowProducer.Size = new System.Drawing.Size(83, 13);
             this.lblShowProducer.TabIndex = 9;
             this.lblShowProducer.Text = "Show Producer:";
-            // 
-            // btnRenameClass
-            // 
-            this.btnRenameClass.Location = new System.Drawing.Point(7, 200);
-            this.btnRenameClass.Name = "btnRenameClass";
-            this.btnRenameClass.Size = new System.Drawing.Size(75, 23);
-            this.btnRenameClass.TabIndex = 5;
-            this.btnRenameClass.Text = "Rename";
-            this.btnRenameClass.UseVisualStyleBackColor = true;
-            this.btnRenameClass.Click += new System.EventHandler(this.btnRenameClass_Click);
-            // 
-            // btnRenameEvent
-            // 
-            this.btnRenameEvent.Location = new System.Drawing.Point(4, 199);
-            this.btnRenameEvent.Name = "btnRenameEvent";
-            this.btnRenameEvent.Size = new System.Drawing.Size(75, 23);
-            this.btnRenameEvent.TabIndex = 5;
-            this.btnRenameEvent.Text = "Rename";
-            this.btnRenameEvent.UseVisualStyleBackColor = true;
-            this.btnRenameEvent.Click += new System.EventHandler(this.btnRenameEvent_Click);
-            // 
-            // btnSaveMoney
-            // 
-            this.btnSaveMoney.Location = new System.Drawing.Point(215, 110);
-            this.btnSaveMoney.Name = "btnSaveMoney";
-            this.btnSaveMoney.Size = new System.Drawing.Size(40, 23);
-            this.btnSaveMoney.TabIndex = 6;
-            this.btnSaveMoney.Text = "Save";
-            this.btnSaveMoney.UseVisualStyleBackColor = true;
             // 
             // frmEditShow
             // 

@@ -280,7 +280,7 @@ namespace HorseShow
             //var rowCount = command.ExecuteScalar()
 
             string connection = getConnectionString();
-            string insertShowsTableQuery = "insert into Shows (ShowProducer, ShowContact, ShowPhoneNumber, ShowDate, ShowLocation, ShowNotes) values ('" + txtShowProducer.Text + "', '" + txtContactName.Text + "', '" + txtPhoneNumber.Text + "', '" + dateShowDate.Value + "', '" + txtLocation.Text + "', '" + txtNotes.Text + "') SELECT SCOPE_IDENTITY()";
+            string insertShowsTableQuery = "insert into Shows (ShowProducer, ShowContact, ShowPhoneNumber, ShowDate, ShowLocation, ShowNotes) values ('" + txtShowProducer.Text + "', '" + txtContactName.Text + "', '" + txtPhoneNumber.Text + "', '" + dateShowDate.Value.Date.ToString() + "', '" + txtLocation.Text + "', '" + txtNotes.Text + "') SELECT SCOPE_IDENTITY()";
 
             using (SqlConnection conn = new SqlConnection(connection))
             {
