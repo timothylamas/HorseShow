@@ -131,7 +131,38 @@ namespace HorseShow
 
             }else if (e.ColumnIndex == 1) //Delete
             {
-                //delete logic goes here
+                DialogResult dialogResult = MessageBox.Show("Are you sure you want to delete the entire show? The data will be permanently lost!", "Confirm", MessageBoxButtons.YesNo);
+                if (dialogResult == DialogResult.Yes)
+                {
+                    string connection = getConnectionString();
+                    string deleteEventMoneyQuery = "delete em from eventMoney em join events ev on ev.eventID = em.link2eventID join shows sh on sh.showID = ev.link2showID where sh.showID = " + a;
+                    string deleteClassesQuery = "delete cl from Classes cl join events ev on cl.link2eventID = ev.eventID join shows sh on ev.link2showID = sh.showid where sh.showid = " + a;
+                    string deleteEventsQuery = "delete ev from Events ev join Shows sh on ev.link2showID = sh.showID where sh.showID = " + a;
+                    string deleteShowQuery = "delete from shows where showID = " + a;
+
+                    using (SqlConnection conn = new SqlConnection(connection))
+                    {
+                        SqlCommand deleteEventMoney = new SqlCommand(deleteEventMoneyQuery, conn);
+                        SqlCommand deleteClasses = new SqlCommand(deleteClassesQuery, conn);
+                        SqlCommand deleteEvents = new SqlCommand(deleteEventsQuery, conn);
+                        SqlCommand deleteShow = new SqlCommand(deleteShowQuery, conn);
+
+                        conn.Open();
+
+                        deleteEventMoney.ExecuteNonQuery();
+                        deleteClasses.ExecuteNonQuery();
+                        deleteEvents.ExecuteNonQuery();
+                        deleteShow.ExecuteNonQuery();
+
+                    }
+
+                    MessageBox.Show("Show has been deleted.");
+                    updateShowsTable();
+                }
+                else if (dialogResult == DialogResult.No)
+                {
+                    updateShowsTable();
+                }
             }
         }
     }
