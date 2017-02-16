@@ -381,6 +381,7 @@ namespace HorseShow
                     listEvents.Items.Add(newEventName);
                 }
 
+                txtNewEventInput.Text = "";
                 updateEventsList();
             }
         }

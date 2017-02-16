@@ -38,7 +38,38 @@ namespace HorseShow
             btnDelete.UseColumnTextForButtonValue = true;
 
             grdShowsTable.Columns[0].Visible = false;
-            
+
+            //add checkbox column to Classes list entry
+            DataGridViewCheckBoxColumn classesEntryCheckboxColumn = new DataGridViewCheckBoxColumn();
+            classesEntryCheckboxColumn.Width = 35;
+            classesEntryCheckboxColumn.ReadOnly = false;
+            classesEntryCheckboxColumn.TrueValue = 1;
+            classesEntryCheckboxColumn.FalseValue = 0;
+            grdClassesEntry.Columns.Add(classesEntryCheckboxColumn);
+
+            //fill in the Shows drop-down on the Rider/Horse Entry tab
+            string connectionString = getConnectionString();
+
+            DataTable showsTable = new DataTable();
+
+            using (SqlConnection con = new SqlConnection(connectionString))
+            {
+
+                try
+                {
+                    SqlDataAdapter adapter = new SqlDataAdapter("SELECT showID, showProducer + ' - ' + CONVERT(varchar(50),showDate,1) as 'showName' from Shows", con);
+                    adapter.Fill(showsTable);
+
+                    cmbRiderHorseEntryShowSelection.DataSource = showsTable;
+                    cmbRiderHorseEntryShowSelection.DisplayMember = "showName";
+                    cmbRiderHorseEntryShowSelection.ValueMember = "showID";
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.ToString());
+                }
+
+            }
         }
 
         private void closeToolStripMenuItem_Click(object sender, EventArgs e)
@@ -66,6 +97,8 @@ namespace HorseShow
 
         private void frmMain_Load(object sender, EventArgs e)
         {
+            // TODO: This line of code loads data into the 'dataViewShowsTable1.viewShowsTable' table. You can move, or remove it, as needed.
+            this.viewShowsTableTableAdapter.Fill(this.dataViewShowsTable1.viewShowsTable);
             //// TODO: This line of code loads data into the 'dataViewShowsTable.viewShowsTable' table. You can move, or remove it, as needed.
             //this.viewShowsTableTableAdapter.Fill(this.dataViewShowsTable.viewShowsTable);
             //// TODO: This line of code loads data into the 'dataViewShowsTable.viewShowsTable' table. You can move, or remove it, as needed.
@@ -91,7 +124,6 @@ namespace HorseShow
             SqlCommandBuilder commandBuilder = new SqlCommandBuilder(dataAdapter);
 
             DataTable table = new DataTable();
-            table.Locale = System.Globalization.CultureInfo.InvariantCulture;
             dataAdapter.Fill(table);
 
             grdShowsTable.DataSource = table;
@@ -163,6 +195,97 @@ namespace HorseShow
                 {
                     updateShowsTable();
                 }
+            }
+        }
+
+        private void cmbRiderHorseEntryShowSelection_Click(object sender, EventArgs e)
+        {
+            //When the user clicks the Show selection drop-down we need to populate it with  list of shows. 
+            //I went with showing the date as well since its possible to have many entries of the same ShowProducer. 
+
+            string connectionString = getConnectionString();
+
+            DataTable showsTable = new DataTable();
+
+            using (SqlConnection con = new SqlConnection(connectionString))
+            {
+
+                try
+                {
+                    SqlDataAdapter adapter = new SqlDataAdapter("SELECT showID, showProducer + ' - ' + CONVERT(varchar(50),showDate,1) as 'showName' from Shows", con);
+                    adapter.Fill(showsTable);
+
+                    cmbRiderHorseEntryShowSelection.DataSource = showsTable;
+                    cmbRiderHorseEntryShowSelection.DisplayMember = "showName";
+                    cmbRiderHorseEntryShowSelection.ValueMember = "showID";
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.ToString());
+                }
+
+            }
+
+            // Add the initial item - you can add this even if the options from the
+            // db were not successfully loaded
+            //cmbRiderHorseEntryShowSelection.Items.Insert(0, new ListItem("<Select Subject>", "0"));
+
+        }
+
+        private void cmbRiderHorseEntryShowSelection_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            //When a show is selected we need to update the Events list with events for that show. 
+
+            //for debug
+            label2.Text = cmbRiderHorseEntryShowSelection.SelectedValue.ToString();
+
+            DataTable eventTable = new DataTable();
+            string connect = getConnectionString();
+            string viewEventsForShowQuery = "select eventName, eventID from Events where link2showID = " + cmbRiderHorseEntryShowSelection.SelectedValue.ToString();
+
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(connect))
+                {
+                    SqlDataAdapter dataAdapter = new SqlDataAdapter(viewEventsForShowQuery, conn);
+                    dataAdapter.Fill(eventTable);
+
+                    cmbEventEntry.DataSource = eventTable;
+                    cmbEventEntry.DisplayMember = "eventName";
+                    cmbEventEntry.ValueMember = "eventID";
+                }
+            }
+            catch (Exception ex)
+            {
+                //MessageBox.Show(ex.ToString());
+            }
+            
+
+        }
+
+        private void cmbEventEntry_SelectedValueChanged(object sender, EventArgs e)
+        {
+            string connnection = getConnectionString();
+            string viewClassesForEventsEntryQuery = "select classname, classID from classes where link2eventID = " + cmbEventEntry.SelectedValue.ToString();
+
+            //for debug
+            //MessageBox.Show("eventID is " + cmbEventEntry.SelectedValue.ToString());
+            try
+            {
+                SqlDataAdapter dataAdapter = new SqlDataAdapter(viewClassesForEventsEntryQuery, connnection);
+
+                SqlCommandBuilder commandBuilder = new SqlCommandBuilder(dataAdapter);
+
+                DataTable table = new DataTable();
+                dataAdapter.Fill(table);
+
+                grdClassesEntry.DataSource = table;
+                grdClassesEntry.Columns[1].ReadOnly = true;
+                grdClassesEntry.Columns[2].Visible = false;
+            }
+            catch (Exception ex)
+            {
+                //MessageBox.Show(ex.ToString());
             }
         }
     }

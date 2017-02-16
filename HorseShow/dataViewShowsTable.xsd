@@ -12,7 +12,7 @@
               <DbSource ConnectionRef="HorseShowDBConnectionString (Settings)" DbObjectName="dbo.Shows" DbObjectType="Table" FillMethodModifier="Public" FillMethodName="Fill" GenerateMethods="Both" GenerateShortCommands="false" GeneratorGetMethodName="GetData" GeneratorSourceName="Fill" GetMethodModifier="Public" GetMethodName="GetData" QueryType="Rowset" ScalarCallRetval="System.Object, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" UseOptimisticConcurrency="false" UserGetMethodName="GetData" UserSourceName="Fill">
                 <SelectCommand>
                   <DbCommand CommandType="Text" ModifiedByUser="true">
-                    <CommandText>SELECT ShowProducer, ShowContact, ShowPhoneNumber, ShowDate, ShowLocation, ShowNotes FROM dbo.Shows</CommandText>
+                    <CommandText>SELECT ShowID, ShowProducer, ShowContact, ShowPhoneNumber, ShowDate, ShowLocation, ShowNotes FROM dbo.Shows</CommandText>
                     <Parameters />
                   </DbCommand>
                 </SelectCommand>
@@ -25,6 +25,7 @@
               <Mapping SourceColumn="ShowDate" DataSetColumn="ShowDate" />
               <Mapping SourceColumn="ShowLocation" DataSetColumn="ShowLocation" />
               <Mapping SourceColumn="ShowNotes" DataSetColumn="ShowNotes" />
+              <Mapping SourceColumn="ShowID" DataSetColumn="ShowID" />
             </Mappings>
             <Sources />
           </TableAdapter>
@@ -36,7 +37,7 @@
   <xs:element name="dataViewShowsTable" msdata:IsDataSet="true" msdata:UseCurrentLocale="true" msprop:EnableTableAdapterManager="True" msprop:Generator_DataSetName="dataViewShowsTable" msprop:Generator_UserDSName="dataViewShowsTable">
     <xs:complexType>
       <xs:choice minOccurs="0" maxOccurs="unbounded">
-        <xs:element name="viewShowsTable" msprop:Generator_TableClassName="viewShowsTableDataTable" msprop:Generator_TableVarName="tableviewShowsTable" msprop:Generator_RowChangedName="viewShowsTableRowChanged" msprop:Generator_TablePropName="viewShowsTable" msprop:Generator_RowDeletingName="viewShowsTableRowDeleting" msprop:Generator_RowChangingName="viewShowsTableRowChanging" msprop:Generator_RowEvHandlerName="viewShowsTableRowChangeEventHandler" msprop:Generator_RowDeletedName="viewShowsTableRowDeleted" msprop:Generator_RowClassName="viewShowsTableRow" msprop:Generator_UserTableName="viewShowsTable" msprop:Generator_RowEvArgName="viewShowsTableRowChangeEvent">
+        <xs:element name="viewShowsTable" msprop:Generator_TableClassName="viewShowsTableDataTable" msprop:Generator_TableVarName="tableviewShowsTable" msprop:Generator_TablePropName="viewShowsTable" msprop:Generator_RowDeletingName="viewShowsTableRowDeleting" msprop:Generator_RowChangingName="viewShowsTableRowChanging" msprop:Generator_RowEvHandlerName="viewShowsTableRowChangeEventHandler" msprop:Generator_RowDeletedName="viewShowsTableRowDeleted" msprop:Generator_UserTableName="viewShowsTable" msprop:Generator_RowChangedName="viewShowsTableRowChanged" msprop:Generator_RowEvArgName="viewShowsTableRowChangeEvent" msprop:Generator_RowClassName="viewShowsTableRow">
           <xs:complexType>
             <xs:sequence>
               <xs:element name="ShowProducer" msprop:Generator_ColumnVarNameInTable="columnShowProducer" msprop:Generator_ColumnPropNameInRow="ShowProducer" msprop:Generator_ColumnPropNameInTable="ShowProducerColumn" msprop:Generator_UserColumnName="ShowProducer" minOccurs="0">
@@ -75,10 +76,15 @@
                   </xs:restriction>
                 </xs:simpleType>
               </xs:element>
+              <xs:element name="ShowID" msdata:ReadOnly="true" msdata:AutoIncrement="true" msdata:AutoIncrementSeed="-1" msdata:AutoIncrementStep="-1" msprop:Generator_ColumnVarNameInTable="columnShowID" msprop:Generator_ColumnPropNameInRow="ShowID" msprop:Generator_ColumnPropNameInTable="ShowIDColumn" msprop:Generator_UserColumnName="ShowID" type="xs:int" />
             </xs:sequence>
           </xs:complexType>
         </xs:element>
       </xs:choice>
     </xs:complexType>
+    <xs:unique name="Constraint1" msdata:PrimaryKey="true">
+      <xs:selector xpath=".//mstns:viewShowsTable" />
+      <xs:field xpath="mstns:ShowID" />
+    </xs:unique>
   </xs:element>
 </xs:schema>

@@ -291,6 +291,8 @@ namespace HorseShow {
             
             private global::System.Data.DataColumn columnShowNotes;
             
+            private global::System.Data.DataColumn columnShowID;
+            
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public viewShowsTableDataTable() {
@@ -374,6 +376,14 @@ namespace HorseShow {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn ShowIDColumn {
+                get {
+                    return this.columnShowID;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             [global::System.ComponentModel.Browsable(false)]
             public int Count {
                 get {
@@ -417,10 +427,18 @@ namespace HorseShow {
                         ShowPhoneNumber,
                         ShowDate,
                         ShowLocation,
-                        ShowNotes};
+                        ShowNotes,
+                        null};
                 rowviewShowsTableRow.ItemArray = columnValuesArray;
                 this.Rows.Add(rowviewShowsTableRow);
                 return rowviewShowsTableRow;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public viewShowsTableRow FindByShowID(int ShowID) {
+                return ((viewShowsTableRow)(this.Rows.Find(new object[] {
+                            ShowID})));
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -446,6 +464,7 @@ namespace HorseShow {
                 this.columnShowDate = base.Columns["ShowDate"];
                 this.columnShowLocation = base.Columns["ShowLocation"];
                 this.columnShowNotes = base.Columns["ShowNotes"];
+                this.columnShowID = base.Columns["ShowID"];
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -463,11 +482,21 @@ namespace HorseShow {
                 base.Columns.Add(this.columnShowLocation);
                 this.columnShowNotes = new global::System.Data.DataColumn("ShowNotes", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnShowNotes);
+                this.columnShowID = new global::System.Data.DataColumn("ShowID", typeof(int), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnShowID);
+                this.Constraints.Add(new global::System.Data.UniqueConstraint("Constraint1", new global::System.Data.DataColumn[] {
+                                this.columnShowID}, true));
                 this.columnShowProducer.MaxLength = 50;
                 this.columnShowContact.MaxLength = 50;
                 this.columnShowPhoneNumber.MaxLength = 50;
                 this.columnShowLocation.MaxLength = 50;
                 this.columnShowNotes.MaxLength = 50;
+                this.columnShowID.AutoIncrement = true;
+                this.columnShowID.AutoIncrementSeed = -1;
+                this.columnShowID.AutoIncrementStep = -1;
+                this.columnShowID.AllowDBNull = false;
+                this.columnShowID.ReadOnly = true;
+                this.columnShowID.Unique = true;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -701,6 +730,17 @@ namespace HorseShow {
                 }
                 set {
                     this[this.tableviewShowsTable.ShowNotesColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public int ShowID {
+                get {
+                    return ((int)(this[this.tableviewShowsTable.ShowIDColumn]));
+                }
+                set {
+                    this[this.tableviewShowsTable.ShowIDColumn] = value;
                 }
             }
             
@@ -942,6 +982,7 @@ namespace HorseShow.dataViewShowsTableTableAdapters {
             tableMapping.ColumnMappings.Add("ShowDate", "ShowDate");
             tableMapping.ColumnMappings.Add("ShowLocation", "ShowLocation");
             tableMapping.ColumnMappings.Add("ShowNotes", "ShowNotes");
+            tableMapping.ColumnMappings.Add("ShowID", "ShowID");
             this._adapter.TableMappings.Add(tableMapping);
         }
         
@@ -958,8 +999,8 @@ namespace HorseShow.dataViewShowsTableTableAdapters {
             this._commandCollection = new global::System.Data.SqlClient.SqlCommand[1];
             this._commandCollection[0] = new global::System.Data.SqlClient.SqlCommand();
             this._commandCollection[0].Connection = this.Connection;
-            this._commandCollection[0].CommandText = "SELECT ShowProducer, ShowContact, ShowPhoneNumber, ShowDate, ShowLocation, ShowNo" +
-                "tes FROM dbo.Shows";
+            this._commandCollection[0].CommandText = "SELECT ShowID, ShowProducer, ShowContact, ShowPhoneNumber, ShowDate, ShowLocation" +
+                ", ShowNotes FROM dbo.Shows";
             this._commandCollection[0].CommandType = global::System.Data.CommandType.Text;
         }
         
