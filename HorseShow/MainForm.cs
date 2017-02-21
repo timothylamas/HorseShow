@@ -41,6 +41,7 @@ namespace HorseShow
 
             //add checkbox column to Classes list entry
             DataGridViewCheckBoxColumn classesEntryCheckboxColumn = new DataGridViewCheckBoxColumn();
+            classesEntryCheckboxColumn.Name = "isChecked";
             classesEntryCheckboxColumn.Width = 35;
             classesEntryCheckboxColumn.ReadOnly = false;
             classesEntryCheckboxColumn.TrueValue = 1;
@@ -89,7 +90,7 @@ namespace HorseShow
 
         private void btnNewShow_Click(object sender, EventArgs e)
         {
-            
+
             frmAddShow showData = new frmAddShow(updateShowsTable);
 
             showData.Show();
@@ -131,7 +132,7 @@ namespace HorseShow
 
         public static string getConnectionString()
         {
-            string dbConnectString = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\HorseShowDB.mdf;Integrated Security=True;Connect Timeout=30";
+            string dbConnectString = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\HorseShowDB.mdf;Integrated Security=True;Connect Timeout=30;MultipleActiveResultSets=True";
 
             return dbConnectString;
         }
@@ -161,7 +162,8 @@ namespace HorseShow
                 frmEditShow editShow = new frmEditShow(a, updateShowsTable);
                 editShow.Show();
 
-            }else if (e.ColumnIndex == 1) //Delete
+            }
+            else if (e.ColumnIndex == 1) //Delete
             {
                 DialogResult dialogResult = MessageBox.Show("Are you sure you want to delete the entire show? The data will be permanently lost!", "Confirm", MessageBoxButtons.YesNo);
                 if (dialogResult == DialogResult.Yes)
@@ -259,7 +261,7 @@ namespace HorseShow
             {
                 //MessageBox.Show(ex.ToString());
             }
-            
+
 
         }
 
@@ -286,6 +288,46 @@ namespace HorseShow
             catch (Exception ex)
             {
                 //MessageBox.Show(ex.ToString());
+            }
+        }
+
+        private void btnAddEntry_Click(object sender, EventArgs e)
+        {
+            string connect = getConnectionString();
+            string showID = cmbRiderHorseEntryShowSelection.SelectedValue.ToString();
+            string eventID = cmbEventEntry.SelectedValue.ToString();
+            string riderName = txtRiderNameEntry.Text;
+            string horseName = txtHorseNameEntry.Text;
+
+            using (SqlConnection conn = new SqlConnection(connect))
+            {
+                conn.Open();
+
+                foreach (DataGridViewRow row in grdClassesEntry.Rows)
+                {
+                    if (Convert.ToBoolean(row.Cells["isChecked"].Value) == true)
+                    {
+                        //for debug
+                        //MessageBox.Show("ShowID is " + showID + ", EventID is "+eventID+", classID is "+ row.Cells["classID"].Value.ToString());
+
+                        string classID = row.Cells["classID"].Value.ToString();
+                        string entryFee = "0";
+                        string getEntryFeeQuery = "select entryfee from eventmoney where link2eventID = " + eventID + " and link2classID = " + classID;
+                        SqlCommand getEntryFee = new SqlCommand(getEntryFeeQuery, conn);
+                        using (SqlDataReader reader = getEntryFee.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                entryFee = reader["entryFee"].ToString();
+                            }
+                        }
+
+                        string insertEntryQuery = "insert into Entry (link2showid, link2eventid, link2classid, ridername, horsename, entryfee) values (" + showID + ", " + eventID + ", " + classID + ", '" + riderName + "', '" + horseName + "', " + entryFee + ")";
+                        SqlCommand insertEntry = new SqlCommand(insertEntryQuery, conn);
+                        insertEntry.ExecuteNonQuery();
+                    }
+                }
+
             }
         }
     }
