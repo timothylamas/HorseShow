@@ -39,6 +39,36 @@ namespace HorseShow
 
             grdShowsTable.Columns[0].Visible = false;
 
+            //initialize the grdEntryTable 
+            DataTable entryTable = new DataTable();
+            string viewEntryTableQuery = "select entryID, drawNumber as 'Draw Number', riderName as 'Rider Name', horseName as 'Horse Name', runtime as 'Run Time', entryfee as 'Entry Fee', randomized from Entry where link2showID = 0 and link2eventID = 0 and link2classID = 0";
+
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(getConnectionString()))
+                {
+                    SqlDataAdapter dataAdapter = new SqlDataAdapter(viewEntryTableQuery, conn);
+                    conn.Open();
+                    dataAdapter.Fill(entryTable);
+
+                    grdEntryTable.DataSource = entryTable;
+                }
+            }
+            catch (Exception ex)
+            {
+                //MessageBox.Show(ex.ToString());
+            }
+            
+
+            //add the Delete buttons to the grdEntryTable datagridview
+            DataGridViewButtonColumn btnEntryDelete = new DataGridViewButtonColumn();
+            grdEntryTable.Columns.Add(btnEntryDelete);
+            btnEntryDelete.Text = "Delete";
+            btnEntryDelete.UseColumnTextForButtonValue = true;
+
+            grdEntryTable.Columns["entryID"].Visible = false;
+            grdEntryTable.Columns["randomized"].Visible = false;
+
             //add checkbox column to Classes list entry
             DataGridViewCheckBoxColumn classesEntryCheckboxColumn = new DataGridViewCheckBoxColumn();
             classesEntryCheckboxColumn.Name = "isChecked";
@@ -115,28 +145,6 @@ namespace HorseShow
 
         }
 
-        public void updateShowsTable()
-        {
-            string connect = getConnectionString();
-            string updateQuery = "select * from viewShowsTable";
-
-            SqlDataAdapter dataAdapter = new SqlDataAdapter(updateQuery, connect);
-
-            SqlCommandBuilder commandBuilder = new SqlCommandBuilder(dataAdapter);
-
-            DataTable table = new DataTable();
-            dataAdapter.Fill(table);
-
-            grdShowsTable.DataSource = table;
-        }
-
-        public static string getConnectionString()
-        {
-            string dbConnectString = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\HorseShowDB.mdf;Integrated Security=True;Connect Timeout=30;MultipleActiveResultSets=True";
-
-            return dbConnectString;
-        }
-
         private void adminConsoleToolStripMenuItem_Click(object sender, EventArgs e)
         {
             frmAdminConsole admin = new frmAdminConsole();
@@ -149,54 +157,117 @@ namespace HorseShow
             //Edit columnIndex is 0
             //Delete columnIndex is 1
 
-            //get the ShowID (which is in a hidden column) from the Shows table
-            int selectedrowindex = grdShowsTable.SelectedCells[0].RowIndex;
-            DataGridViewRow selectedRow = grdShowsTable.Rows[selectedrowindex];
-            string a = selectedRow.Cells["ID"].Value.ToString();
-
-            //for debug
-            //MessageBox.Show("ShowID to pass is " + a + ", column index is "+e.ColumnIndex);
-
-            if (e.ColumnIndex == 0) //Edit
+            try
             {
-                frmEditShow editShow = new frmEditShow(a, updateShowsTable);
-                editShow.Show();
-
-            }
-            else if (e.ColumnIndex == 1) //Delete
-            {
-                DialogResult dialogResult = MessageBox.Show("Are you sure you want to delete the entire show? The data will be permanently lost!", "Confirm", MessageBoxButtons.YesNo);
-                if (dialogResult == DialogResult.Yes)
+                if (e.RowIndex >= 0 && e.ColumnIndex >= 0)
                 {
-                    string connection = getConnectionString();
-                    string deleteEventMoneyQuery = "delete em from eventMoney em join events ev on ev.eventID = em.link2eventID join shows sh on sh.showID = ev.link2showID where sh.showID = " + a;
-                    string deleteClassesQuery = "delete cl from Classes cl join events ev on cl.link2eventID = ev.eventID join shows sh on ev.link2showID = sh.showid where sh.showid = " + a;
-                    string deleteEventsQuery = "delete ev from Events ev join Shows sh on ev.link2showID = sh.showID where sh.showID = " + a;
-                    string deleteShowQuery = "delete from shows where showID = " + a;
 
-                    using (SqlConnection conn = new SqlConnection(connection))
+
+                    //get the ShowID (which is in a hidden column) from the Shows table
+                    int selectedrowindex = grdShowsTable.SelectedCells[0].RowIndex;
+                    DataGridViewRow selectedRow = grdShowsTable.Rows[selectedrowindex];
+                    string a = selectedRow.Cells["ID"].Value.ToString();
+
+                    //for debug
+                    //MessageBox.Show("ShowID to pass is " + a + ", column index is "+e.ColumnIndex);
+
+                    if (e.ColumnIndex == 0) //Edit
                     {
-                        SqlCommand deleteEventMoney = new SqlCommand(deleteEventMoneyQuery, conn);
-                        SqlCommand deleteClasses = new SqlCommand(deleteClassesQuery, conn);
-                        SqlCommand deleteEvents = new SqlCommand(deleteEventsQuery, conn);
-                        SqlCommand deleteShow = new SqlCommand(deleteShowQuery, conn);
-
-                        conn.Open();
-
-                        deleteEventMoney.ExecuteNonQuery();
-                        deleteClasses.ExecuteNonQuery();
-                        deleteEvents.ExecuteNonQuery();
-                        deleteShow.ExecuteNonQuery();
+                        frmEditShow editShow = new frmEditShow(a, updateShowsTable);
+                        editShow.Show();
 
                     }
+                    else if (e.ColumnIndex == 1) //Delete
+                    {
+                        DialogResult dialogResult = MessageBox.Show("Are you sure you want to delete the entire show? The data will be permanently lost!", "Confirm", MessageBoxButtons.YesNo);
+                        if (dialogResult == DialogResult.Yes)
+                        {
+                            string connection = getConnectionString();
+                            string deleteEventMoneyQuery = "delete em from eventMoney em join events ev on ev.eventID = em.link2eventID join shows sh on sh.showID = ev.link2showID where sh.showID = " + a;
+                            string deleteClassesQuery = "delete cl from Classes cl join events ev on cl.link2eventID = ev.eventID join shows sh on ev.link2showID = sh.showid where sh.showid = " + a;
+                            string deleteEventsQuery = "delete ev from Events ev join Shows sh on ev.link2showID = sh.showID where sh.showID = " + a;
+                            string deleteShowQuery = "delete from shows where showID = " + a;
 
-                    MessageBox.Show("Show has been deleted.");
-                    updateShowsTable();
+                            using (SqlConnection conn = new SqlConnection(connection))
+                            {
+                                SqlCommand deleteEventMoney = new SqlCommand(deleteEventMoneyQuery, conn);
+                                SqlCommand deleteClasses = new SqlCommand(deleteClassesQuery, conn);
+                                SqlCommand deleteEvents = new SqlCommand(deleteEventsQuery, conn);
+                                SqlCommand deleteShow = new SqlCommand(deleteShowQuery, conn);
+
+                                conn.Open();
+
+                                deleteEventMoney.ExecuteNonQuery();
+                                deleteClasses.ExecuteNonQuery();
+                                deleteEvents.ExecuteNonQuery();
+                                deleteShow.ExecuteNonQuery();
+
+                            }
+
+                            MessageBox.Show("Show has been deleted.");
+                            updateShowsTable();
+                        }
+                        else if (dialogResult == DialogResult.No)
+                        {
+                            updateShowsTable();
+                        }
+                    }
                 }
-                else if (dialogResult == DialogResult.No)
+            }
+            catch(Exception exp)
+            {
+                MessageBox.Show(exp.ToString());
+            }
+        }
+
+        private void grdEntryTable_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            //Cell Index is 0 for Delete button
+
+            //for debug
+            //MessageBox.Show("Index is " + e.ColumnIndex);
+            try
+            {
+                if (e.RowIndex >= 0 && e.ColumnIndex >= 0)
                 {
-                    updateShowsTable();
+
+
+                    int selectedRowIndex = grdEntryTable.SelectedCells[0].RowIndex;
+                    DataGridViewRow selectedRow = grdEntryTable.Rows[selectedRowIndex];
+                    string index = selectedRow.Cells["entryID"].Value.ToString();
+                    string randomized = selectedRow.Cells["randomized"].Value.ToString();
+
+                    if (e.ColumnIndex == 0)
+                    {
+                        if (randomized != "1")
+                        {
+                            try
+                            {
+                                using (SqlConnection conn = new SqlConnection(getConnectionString()))
+                                {
+                                    conn.Open();
+                                    string deleteEntryRecordQuery = "delete from entry where entryID = " + index;
+                                    SqlCommand deleteEntryRecord = new SqlCommand(deleteEntryRecordQuery, conn);
+                                    deleteEntryRecord.ExecuteNonQuery();
+                                }
+
+                                updateEntryTable();
+                            }
+                            catch (Exception ex)
+                            {
+                                MessageBox.Show(ex.ToString());
+                            }
+                        }
+                        else
+                        {
+                            MessageBox.Show("The draw order for this entry has already been determined!\nThe entry can not be deleted.");
+                        }
+                    }
                 }
+            }
+            catch (Exception exp)
+            {
+                MessageBox.Show(exp.ToString());
             }
         }
 
@@ -238,10 +309,8 @@ namespace HorseShow
         {
             //When a show is selected we need to update the Events list with events for that show. 
 
-            //for debug
-            label2.Text = cmbRiderHorseEntryShowSelection.SelectedValue.ToString();
-
             DataTable eventTable = new DataTable();
+            DataTable eventDataTable = new DataTable();
             string connect = getConnectionString();
             string viewEventsForShowQuery = "select eventName, eventID from Events where link2showID = " + cmbRiderHorseEntryShowSelection.SelectedValue.ToString();
 
@@ -251,10 +320,15 @@ namespace HorseShow
                 {
                     SqlDataAdapter dataAdapter = new SqlDataAdapter(viewEventsForShowQuery, conn);
                     dataAdapter.Fill(eventTable);
+                    dataAdapter.Fill(eventDataTable);
 
                     cmbEventEntry.DataSource = eventTable;
                     cmbEventEntry.DisplayMember = "eventName";
                     cmbEventEntry.ValueMember = "eventID";
+
+                    cmbEntryTableEvents.DataSource = eventDataTable;
+                    cmbEntryTableEvents.DisplayMember = "eventName";
+                    cmbEntryTableEvents.ValueMember = "eventID";
                 }
             }
             catch (Exception ex)
@@ -289,6 +363,35 @@ namespace HorseShow
             {
                 //MessageBox.Show(ex.ToString());
             }
+        }
+
+        private void cmbEntryTableEvents_SelectedValueChanged(object sender, EventArgs e)
+        {
+            DataTable classDataTable = new DataTable();
+            string connect = getConnectionString();
+            string viewClassesForShowQuery = "select className, classID from Classes where link2eventID = " + cmbEntryTableEvents.SelectedValue.ToString();
+
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(connect))
+                {
+                    SqlDataAdapter dataAdapter = new SqlDataAdapter(viewClassesForShowQuery, conn);
+                    dataAdapter.Fill(classDataTable);
+
+                    cmbEntryTableClasses.DataSource = classDataTable;
+                    cmbEntryTableClasses.DisplayMember = "className";
+                    cmbEntryTableClasses.ValueMember = "classID";
+                }
+            }
+            catch (Exception ex)
+            {
+                //MessageBox.Show(ex.ToString());
+            }
+        }
+
+        private void cmbEntryTableClasses_SelectedValueChanged(object sender, EventArgs e)
+        {
+            updateEntryTable();
         }
 
         private void btnAddEntry_Click(object sender, EventArgs e)
@@ -328,6 +431,65 @@ namespace HorseShow
                     }
                 }
 
+            }
+
+            //blank the fields for the next entry
+            txtRiderNameEntry.Text = "";
+            txtHorseNameEntry.Text = "";
+
+            foreach (DataGridViewRow row in grdClassesEntry.Rows)
+            {
+                row.Cells["isChecked"].Value = 0;
+            }
+
+            updateEntryTable();
+
+        }
+
+        public static string getConnectionString()
+        {
+            string dbConnectString = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\HorseShowDB.mdf;Integrated Security=True;Connect Timeout=30;MultipleActiveResultSets=True";
+
+            return dbConnectString;
+        }
+
+        public void updateShowsTable()
+        {
+            string connect = getConnectionString();
+            string updateQuery = "select * from viewShowsTable";
+
+            SqlDataAdapter dataAdapter = new SqlDataAdapter(updateQuery, connect);
+
+            SqlCommandBuilder commandBuilder = new SqlCommandBuilder(dataAdapter);
+
+            DataTable table = new DataTable();
+            dataAdapter.Fill(table);
+
+            grdShowsTable.DataSource = table;
+        }
+
+        public void updateEntryTable()
+        {
+            DataTable entryTable = new DataTable();
+            string connect = getConnectionString();
+            string eventID = cmbEntryTableEvents.SelectedValue.ToString();
+            string classID = cmbEntryTableClasses.SelectedValue.ToString();
+            string viewEntryTableQuery = "select entryID, drawNumber as 'Draw Number', riderName as 'Rider Name', horseName as 'Horse Name', runtime as 'Run Time', entryfee as 'Entry Fee', randomized from Entry where link2showID = " + cmbRiderHorseEntryShowSelection.SelectedValue.ToString() + " and link2eventID = " + eventID + " and link2classID = " + classID;
+
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(connect))
+                {
+                    SqlDataAdapter dataAdapter = new SqlDataAdapter(viewEntryTableQuery, conn);
+                    conn.Open();
+                    dataAdapter.Fill(entryTable);
+
+                    grdEntryTable.DataSource = entryTable;
+                }
+            }
+            catch (Exception ex)
+            {
+                //MessageBox.Show(ex.ToString());
             }
         }
     }

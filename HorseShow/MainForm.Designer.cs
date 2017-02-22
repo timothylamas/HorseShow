@@ -45,9 +45,15 @@
             this.grpShows = new System.Windows.Forms.GroupBox();
             this.grdShowsTable = new System.Windows.Forms.DataGridView();
             this.tabHorseRiderEntry = new System.Windows.Forms.TabPage();
+            this.cmbEntryTableClasses = new System.Windows.Forms.ComboBox();
+            this.cmbEntryTableEvents = new System.Windows.Forms.ComboBox();
+            this.lblEntryClass = new System.Windows.Forms.Label();
+            this.lblEntryTableEvent = new System.Windows.Forms.Label();
+            this.grdEntryTable = new System.Windows.Forms.DataGridView();
             this.cmbRiderHorseEntryShowSelection = new System.Windows.Forms.ComboBox();
             this.lblRiderHorseEntryShowSelection = new System.Windows.Forms.Label();
             this.grpNewRiderHorseEntry = new System.Windows.Forms.GroupBox();
+            this.btnAddEntry = new System.Windows.Forms.Button();
             this.cmbEventEntry = new System.Windows.Forms.ComboBox();
             this.grdClassesEntry = new System.Windows.Forms.DataGridView();
             this.txtHorseNameEntry = new System.Windows.Forms.TextBox();
@@ -56,7 +62,6 @@
             this.lblClassEntry = new System.Windows.Forms.Label();
             this.lblEventsEntry = new System.Windows.Forms.Label();
             this.lblRiderNameEntry = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
             this.stripFooter = new System.Windows.Forms.StatusStrip();
             this.stripVersionNumber = new System.Windows.Forms.ToolStripStatusLabel();
             this.horseShowDBDataSet = new HorseShow.HorseShowDBDataSet();
@@ -65,8 +70,7 @@
             this.viewShowsTableTableAdapter = new HorseShow.dataViewShowsTableTableAdapters.viewShowsTableTableAdapter();
             this.dataViewShowsTableBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.dataViewShowsTable1 = new HorseShow.dataViewShowsTable();
-            this.dataGridView1 = new System.Windows.Forms.DataGridView();
-            this.btnAddEntry = new System.Windows.Forms.Button();
+            this.btnRandomizeEntries = new System.Windows.Forms.Button();
             this.menuStrip1.SuspendLayout();
             this.toolStripMain.SuspendLayout();
             this.tabForms.SuspendLayout();
@@ -74,6 +78,7 @@
             this.grpShows.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.grdShowsTable)).BeginInit();
             this.tabHorseRiderEntry.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.grdEntryTable)).BeginInit();
             this.grpNewRiderHorseEntry.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.grdClassesEntry)).BeginInit();
             this.stripFooter.SuspendLayout();
@@ -82,7 +87,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.dataViewShowsTable)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataViewShowsTableBindingSource)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataViewShowsTable1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.SuspendLayout();
             // 
             // menuStrip1
@@ -228,11 +232,15 @@
             // 
             // tabHorseRiderEntry
             // 
-            this.tabHorseRiderEntry.Controls.Add(this.dataGridView1);
+            this.tabHorseRiderEntry.Controls.Add(this.btnRandomizeEntries);
+            this.tabHorseRiderEntry.Controls.Add(this.cmbEntryTableClasses);
+            this.tabHorseRiderEntry.Controls.Add(this.cmbEntryTableEvents);
+            this.tabHorseRiderEntry.Controls.Add(this.lblEntryClass);
+            this.tabHorseRiderEntry.Controls.Add(this.lblEntryTableEvent);
+            this.tabHorseRiderEntry.Controls.Add(this.grdEntryTable);
             this.tabHorseRiderEntry.Controls.Add(this.cmbRiderHorseEntryShowSelection);
             this.tabHorseRiderEntry.Controls.Add(this.lblRiderHorseEntryShowSelection);
             this.tabHorseRiderEntry.Controls.Add(this.grpNewRiderHorseEntry);
-            this.tabHorseRiderEntry.Controls.Add(this.label2);
             this.tabHorseRiderEntry.Location = new System.Drawing.Point(4, 22);
             this.tabHorseRiderEntry.Name = "tabHorseRiderEntry";
             this.tabHorseRiderEntry.Padding = new System.Windows.Forms.Padding(3);
@@ -240,6 +248,56 @@
             this.tabHorseRiderEntry.TabIndex = 1;
             this.tabHorseRiderEntry.Text = "Rider/Horse Entry";
             this.tabHorseRiderEntry.UseVisualStyleBackColor = true;
+            // 
+            // cmbEntryTableClasses
+            // 
+            this.cmbEntryTableClasses.FormattingEnabled = true;
+            this.cmbEntryTableClasses.Location = new System.Drawing.Point(769, 16);
+            this.cmbEntryTableClasses.Name = "cmbEntryTableClasses";
+            this.cmbEntryTableClasses.Size = new System.Drawing.Size(121, 21);
+            this.cmbEntryTableClasses.TabIndex = 8;
+            this.cmbEntryTableClasses.SelectedValueChanged += new System.EventHandler(this.cmbEntryTableClasses_SelectedValueChanged);
+            // 
+            // cmbEntryTableEvents
+            // 
+            this.cmbEntryTableEvents.FormattingEnabled = true;
+            this.cmbEntryTableEvents.Location = new System.Drawing.Point(586, 16);
+            this.cmbEntryTableEvents.Name = "cmbEntryTableEvents";
+            this.cmbEntryTableEvents.Size = new System.Drawing.Size(121, 21);
+            this.cmbEntryTableEvents.TabIndex = 7;
+            this.cmbEntryTableEvents.SelectedValueChanged += new System.EventHandler(this.cmbEntryTableEvents_SelectedValueChanged);
+            // 
+            // lblEntryClass
+            // 
+            this.lblEntryClass.AutoSize = true;
+            this.lblEntryClass.Location = new System.Drawing.Point(727, 16);
+            this.lblEntryClass.Name = "lblEntryClass";
+            this.lblEntryClass.Size = new System.Drawing.Size(35, 13);
+            this.lblEntryClass.TabIndex = 6;
+            this.lblEntryClass.Text = "Class:";
+            // 
+            // lblEntryTableEvent
+            // 
+            this.lblEntryTableEvent.AutoSize = true;
+            this.lblEntryTableEvent.Location = new System.Drawing.Point(541, 16);
+            this.lblEntryTableEvent.Name = "lblEntryTableEvent";
+            this.lblEntryTableEvent.Size = new System.Drawing.Size(38, 13);
+            this.lblEntryTableEvent.TabIndex = 5;
+            this.lblEntryTableEvent.Text = "Event:";
+            // 
+            // grdEntryTable
+            // 
+            this.grdEntryTable.AllowUserToAddRows = false;
+            this.grdEntryTable.AllowUserToDeleteRows = false;
+            this.grdEntryTable.AllowUserToOrderColumns = true;
+            this.grdEntryTable.AllowUserToResizeRows = false;
+            this.grdEntryTable.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.grdEntryTable.Location = new System.Drawing.Point(341, 45);
+            this.grdEntryTable.Name = "grdEntryTable";
+            this.grdEntryTable.ShowEditingIcon = false;
+            this.grdEntryTable.Size = new System.Drawing.Size(902, 449);
+            this.grdEntryTable.TabIndex = 4;
+            this.grdEntryTable.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.grdEntryTable_CellClick);
             // 
             // cmbRiderHorseEntryShowSelection
             // 
@@ -278,6 +336,16 @@
             this.grpNewRiderHorseEntry.TabIndex = 1;
             this.grpNewRiderHorseEntry.TabStop = false;
             this.grpNewRiderHorseEntry.Text = "New Entry";
+            // 
+            // btnAddEntry
+            // 
+            this.btnAddEntry.Location = new System.Drawing.Point(82, 309);
+            this.btnAddEntry.Name = "btnAddEntry";
+            this.btnAddEntry.Size = new System.Drawing.Size(75, 23);
+            this.btnAddEntry.TabIndex = 4;
+            this.btnAddEntry.Text = "Add Entry";
+            this.btnAddEntry.UseVisualStyleBackColor = true;
+            this.btnAddEntry.Click += new System.EventHandler(this.btnAddEntry_Click);
             // 
             // cmbEventEntry
             // 
@@ -358,15 +426,6 @@
             this.lblRiderNameEntry.TabIndex = 0;
             this.lblRiderNameEntry.Text = "Rider Name:";
             // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(338, 3);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(192, 13);
-            this.label2.TabIndex = 0;
-            this.label2.Text = "You are on the Horse/Rider Entry page";
-            // 
             // stripFooter
             // 
             this.stripFooter.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -414,23 +473,14 @@
             this.dataViewShowsTable1.DataSetName = "dataViewShowsTable";
             this.dataViewShowsTable1.SchemaSerializationMode = System.Data.SchemaSerializationMode.IncludeSchema;
             // 
-            // dataGridView1
+            // btnRandomizeEntries
             // 
-            this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView1.Location = new System.Drawing.Point(341, 45);
-            this.dataGridView1.Name = "dataGridView1";
-            this.dataGridView1.Size = new System.Drawing.Size(902, 489);
-            this.dataGridView1.TabIndex = 4;
-            // 
-            // btnAddEntry
-            // 
-            this.btnAddEntry.Location = new System.Drawing.Point(82, 309);
-            this.btnAddEntry.Name = "btnAddEntry";
-            this.btnAddEntry.Size = new System.Drawing.Size(75, 23);
-            this.btnAddEntry.TabIndex = 4;
-            this.btnAddEntry.Text = "Add Entry";
-            this.btnAddEntry.UseVisualStyleBackColor = true;
-            this.btnAddEntry.Click += new System.EventHandler(this.btnAddEntry_Click);
+            this.btnRandomizeEntries.Location = new System.Drawing.Point(1138, 500);
+            this.btnRandomizeEntries.Name = "btnRandomizeEntries";
+            this.btnRandomizeEntries.Size = new System.Drawing.Size(105, 23);
+            this.btnRandomizeEntries.TabIndex = 9;
+            this.btnRandomizeEntries.Text = "Randomize Entries";
+            this.btnRandomizeEntries.UseVisualStyleBackColor = true;
             // 
             // frmMain
             // 
@@ -457,6 +507,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.grdShowsTable)).EndInit();
             this.tabHorseRiderEntry.ResumeLayout(false);
             this.tabHorseRiderEntry.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.grdEntryTable)).EndInit();
             this.grpNewRiderHorseEntry.ResumeLayout(false);
             this.grpNewRiderHorseEntry.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.grdClassesEntry)).EndInit();
@@ -467,7 +518,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.dataViewShowsTable)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataViewShowsTableBindingSource)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataViewShowsTable1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -484,7 +534,6 @@
         private System.Windows.Forms.TabControl tabForms;
         private System.Windows.Forms.TabPage tabShows;
         private System.Windows.Forms.TabPage tabHorseRiderEntry;
-        private System.Windows.Forms.Label label2;
         private System.Windows.Forms.StatusStrip stripFooter;
         private System.Windows.Forms.ToolStripStatusLabel stripVersionNumber;
         private System.Windows.Forms.GroupBox grpShows;
@@ -510,8 +559,13 @@
         private System.Windows.Forms.Label lblClassEntry;
         private System.Windows.Forms.DataGridView grdClassesEntry;
         private System.Windows.Forms.ComboBox cmbEventEntry;
-        private System.Windows.Forms.DataGridView dataGridView1;
+        private System.Windows.Forms.DataGridView grdEntryTable;
         private System.Windows.Forms.Button btnAddEntry;
+        private System.Windows.Forms.ComboBox cmbEntryTableClasses;
+        private System.Windows.Forms.ComboBox cmbEntryTableEvents;
+        private System.Windows.Forms.Label lblEntryClass;
+        private System.Windows.Forms.Label lblEntryTableEvent;
+        private System.Windows.Forms.Button btnRandomizeEntries;
     }
 }
 
