@@ -45,6 +45,7 @@
             this.grpShows = new System.Windows.Forms.GroupBox();
             this.grdShowsTable = new System.Windows.Forms.DataGridView();
             this.tabHorseRiderEntry = new System.Windows.Forms.TabPage();
+            this.btnRandomizeEntries = new System.Windows.Forms.Button();
             this.cmbEntryTableClasses = new System.Windows.Forms.ComboBox();
             this.cmbEntryTableEvents = new System.Windows.Forms.ComboBox();
             this.lblEntryClass = new System.Windows.Forms.Label();
@@ -70,7 +71,6 @@
             this.viewShowsTableTableAdapter = new HorseShow.dataViewShowsTableTableAdapters.viewShowsTableTableAdapter();
             this.dataViewShowsTableBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.dataViewShowsTable1 = new HorseShow.dataViewShowsTable();
-            this.btnRandomizeEntries = new System.Windows.Forms.Button();
             this.menuStrip1.SuspendLayout();
             this.toolStripMain.SuspendLayout();
             this.tabForms.SuspendLayout();
@@ -249,6 +249,16 @@
             this.tabHorseRiderEntry.Text = "Rider/Horse Entry";
             this.tabHorseRiderEntry.UseVisualStyleBackColor = true;
             // 
+            // btnRandomizeEntries
+            // 
+            this.btnRandomizeEntries.Location = new System.Drawing.Point(1138, 500);
+            this.btnRandomizeEntries.Name = "btnRandomizeEntries";
+            this.btnRandomizeEntries.Size = new System.Drawing.Size(105, 23);
+            this.btnRandomizeEntries.TabIndex = 9;
+            this.btnRandomizeEntries.Text = "Randomize Entries";
+            this.btnRandomizeEntries.UseVisualStyleBackColor = true;
+            this.btnRandomizeEntries.Click += new System.EventHandler(this.btnRandomizeEntries_Click);
+            // 
             // cmbEntryTableClasses
             // 
             this.cmbEntryTableClasses.FormattingEnabled = true;
@@ -298,6 +308,7 @@
             this.grdEntryTable.Size = new System.Drawing.Size(902, 449);
             this.grdEntryTable.TabIndex = 4;
             this.grdEntryTable.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.grdEntryTable_CellClick);
+            this.grdEntryTable.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.grdEntryTable_CellValueChanged);
             // 
             // cmbRiderHorseEntryShowSelection
             // 
@@ -472,15 +483,6 @@
             // 
             this.dataViewShowsTable1.DataSetName = "dataViewShowsTable";
             this.dataViewShowsTable1.SchemaSerializationMode = System.Data.SchemaSerializationMode.IncludeSchema;
-            // 
-            // btnRandomizeEntries
-            // 
-            this.btnRandomizeEntries.Location = new System.Drawing.Point(1138, 500);
-            this.btnRandomizeEntries.Name = "btnRandomizeEntries";
-            this.btnRandomizeEntries.Size = new System.Drawing.Size(105, 23);
-            this.btnRandomizeEntries.TabIndex = 9;
-            this.btnRandomizeEntries.Text = "Randomize Entries";
-            this.btnRandomizeEntries.UseVisualStyleBackColor = true;
             // 
             // frmMain
             // 

@@ -59,7 +59,6 @@ namespace HorseShow
                 //MessageBox.Show(ex.ToString());
             }
             
-
             //add the Delete buttons to the grdEntryTable datagridview
             DataGridViewButtonColumn btnEntryDelete = new DataGridViewButtonColumn();
             grdEntryTable.Columns.Add(btnEntryDelete);
@@ -68,6 +67,12 @@ namespace HorseShow
 
             grdEntryTable.Columns["entryID"].Visible = false;
             grdEntryTable.Columns["randomized"].Visible = false;
+
+            //make specific columns in grdEntryTable read-only, so that only Run Time is editable
+            grdEntryTable.Columns["Draw Number"].ReadOnly = true;
+            grdEntryTable.Columns["Rider Name"].ReadOnly = true;
+            //grdEntryTable.Columns["Horse Name"].ReadOnly = true;
+            grdEntryTable.Columns["Entry Fee"].ReadOnly = true;
 
             //add checkbox column to Classes list entry
             DataGridViewCheckBoxColumn classesEntryCheckboxColumn = new DataGridViewCheckBoxColumn();
@@ -161,8 +166,6 @@ namespace HorseShow
             {
                 if (e.RowIndex >= 0 && e.ColumnIndex >= 0)
                 {
-
-
                     //get the ShowID (which is in a hidden column) from the Shows table
                     int selectedrowindex = grdShowsTable.SelectedCells[0].RowIndex;
                     DataGridViewRow selectedRow = grdShowsTable.Rows[selectedrowindex];
@@ -231,32 +234,24 @@ namespace HorseShow
                 if (e.RowIndex >= 0 && e.ColumnIndex >= 0)
                 {
 
-
-                    int selectedRowIndex = grdEntryTable.SelectedCells[0].RowIndex;
-                    DataGridViewRow selectedRow = grdEntryTable.Rows[selectedRowIndex];
-                    string index = selectedRow.Cells["entryID"].Value.ToString();
-                    string randomized = selectedRow.Cells["randomized"].Value.ToString();
-
                     if (e.ColumnIndex == 0)
                     {
-                        if (randomized != "1")
-                        {
-                            try
-                            {
-                                using (SqlConnection conn = new SqlConnection(getConnectionString()))
-                                {
-                                    conn.Open();
-                                    string deleteEntryRecordQuery = "delete from entry where entryID = " + index;
-                                    SqlCommand deleteEntryRecord = new SqlCommand(deleteEntryRecordQuery, conn);
-                                    deleteEntryRecord.ExecuteNonQuery();
-                                }
+                        int selectedRowIndex = grdEntryTable.SelectedCells[0].RowIndex;
+                        DataGridViewRow selectedRow = grdEntryTable.Rows[selectedRowIndex];
+                        string index = selectedRow.Cells["entryID"].Value.ToString();
+                        string randomized = selectedRow.Cells["randomized"].Value.ToString();
 
-                                updateEntryTable();
-                            }
-                            catch (Exception ex)
+                        if (randomized != "1")
+                        {  
+                            using (SqlConnection conn = new SqlConnection(getConnectionString()))
                             {
-                                MessageBox.Show(ex.ToString());
+                                conn.Open();
+                                string deleteEntryRecordQuery = "delete from entry where entryID = " + index;
+                                SqlCommand deleteEntryRecord = new SqlCommand(deleteEntryRecordQuery, conn);
+                                deleteEntryRecord.ExecuteNonQuery();
                             }
+
+                            updateEntryTable(); 
                         }
                         else
                         {
@@ -401,49 +396,243 @@ namespace HorseShow
             string eventID = cmbEventEntry.SelectedValue.ToString();
             string riderName = txtRiderNameEntry.Text;
             string horseName = txtHorseNameEntry.Text;
+            bool classIsSelected = false;
 
-            using (SqlConnection conn = new SqlConnection(connect))
+            try
             {
-                conn.Open();
+                //need some validation checking here. 
+                //1: Is there at least 1 Class checked? 
+                //2: Does the Rider Name already exist for this Event + Class?
 
                 foreach (DataGridViewRow row in grdClassesEntry.Rows)
                 {
                     if (Convert.ToBoolean(row.Cells["isChecked"].Value) == true)
-                    {
-                        //for debug
-                        //MessageBox.Show("ShowID is " + showID + ", EventID is "+eventID+", classID is "+ row.Cells["classID"].Value.ToString());
+                        classIsSelected = true;
+                }
 
-                        string classID = row.Cells["classID"].Value.ToString();
-                        string entryFee = "0";
-                        string getEntryFeeQuery = "select entryfee from eventmoney where link2eventID = " + eventID + " and link2classID = " + classID;
-                        SqlCommand getEntryFee = new SqlCommand(getEntryFeeQuery, conn);
-                        using (SqlDataReader reader = getEntryFee.ExecuteReader())
+                using (SqlConnection conn = new SqlConnection(connect))
+                {
+                    if (!classIsSelected)
+                    {
+                        MessageBox.Show("Please select at least one Class to enter.");
+                    }
+                    else if (riderName == "")
+                    {
+                        MessageBox.Show("Rider name can not be blank.");
+                    }
+                    else if (horseName == "")
+                    {
+                        MessageBox.Show("Horse name can not be blank.");
+                    }
+                    else
+                    {
+                        conn.Open();
+
+                        foreach (DataGridViewRow row in grdClassesEntry.Rows)
                         {
-                            while (reader.Read())
+                            if (Convert.ToBoolean(row.Cells["isChecked"].Value) == true)
                             {
-                                entryFee = reader["entryFee"].ToString();
+                                //for debug
+                                //MessageBox.Show("ShowID is " + showID + ", EventID is "+eventID+", classID is "+ row.Cells["classID"].Value.ToString());
+
+                                string classID = row.Cells["classID"].Value.ToString();
+
+                                string riderNameToCheck = txtRiderNameEntry.Text.ToUpper();
+                                string horseNameToCheck = txtHorseNameEntry.Text.ToUpper();
+                                bool duplicateRider = false;
+                                string checkRiderNameDupesQuery = "select riderName, horseName from entry where link2showID = " + showID + " and link2eventID = " + eventID + " and link2classID = " + classID;
+                                SqlCommand checkRiderNameDupes = new SqlCommand(checkRiderNameDupesQuery, conn);
+                                using (SqlDataReader checkDupes = checkRiderNameDupes.ExecuteReader())
+                                {
+                                    while (checkDupes.Read())
+                                    {
+                                        if (((checkDupes["riderName"].ToString().ToUpper()) == riderNameToCheck) && ((checkDupes["horseName"].ToString().ToUpper()) == horseNameToCheck))
+                                        {
+                                            duplicateRider = true;
+                                        }
+                                    }
+                                }
+                                if (duplicateRider)
+                                {
+                                    MessageBox.Show(riderName + " riding " + horseName + " is already entered in the " + row.Cells["className"].Value.ToString() + " class for the selected event.");
+                                }
+                                else
+                                {
+                                    string entryFee = "0";
+                                    string getEntryFeeQuery = "select entryfee from eventmoney where link2eventID = " + eventID + " and link2classID = " + classID;
+                                    SqlCommand getEntryFee = new SqlCommand(getEntryFeeQuery, conn);
+                                    using (SqlDataReader reader = getEntryFee.ExecuteReader())
+                                    {
+                                        while (reader.Read())
+                                        {
+                                            entryFee = reader["entryFee"].ToString();
+                                        }
+                                    }
+
+                                    string insertEntryQuery = "insert into Entry (link2showid, link2eventid, link2classid, ridername, horsename, entryfee) values (" + showID + ", " + eventID + ", " + classID + ", '" + riderName + "', '" + horseName + "', " + entryFee + ")";
+                                    SqlCommand insertEntry = new SqlCommand(insertEntryQuery, conn);
+                                    insertEntry.ExecuteNonQuery();
+                                }
                             }
                         }
 
-                        string insertEntryQuery = "insert into Entry (link2showid, link2eventid, link2classid, ridername, horsename, entryfee) values (" + showID + ", " + eventID + ", " + classID + ", '" + riderName + "', '" + horseName + "', " + entryFee + ")";
-                        SqlCommand insertEntry = new SqlCommand(insertEntryQuery, conn);
-                        insertEntry.ExecuteNonQuery();
+                        //blank the fields for the next entry
+                        txtRiderNameEntry.Text = "";
+                        txtHorseNameEntry.Text = "";
+
+                        foreach (DataGridViewRow row in grdClassesEntry.Rows)
+                        {
+                            row.Cells["isChecked"].Value = 0;
+                        }
+
+                        updateEntryTable();
+                    }
+
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.ToString());
+            }
+
+        }
+
+        private void grdEntryTable_CellValueChanged(object sender, DataGridViewCellEventArgs e)
+        {
+            //Column index for Run Time is 5
+            //Column index for Horse Name is 4
+            string showID = cmbRiderHorseEntryShowSelection.SelectedValue.ToString();
+            string eventID = cmbEventEntry.SelectedValue.ToString();
+            string classID = cmbEntryTableClasses.SelectedValue.ToString();
+
+            if (e.RowIndex >= 0 && e.ColumnIndex >= 0)
+            {
+                if (e.ColumnIndex == 5)
+                {
+                    try
+                    {
+                        string newTime = grdEntryTable.SelectedCells[0].Value.ToString();
+                        int selectedRowIndex = grdEntryTable.SelectedCells[0].RowIndex;
+                        DataGridViewRow selectedRow = grdEntryTable.Rows[selectedRowIndex];
+                        string index = selectedRow.Cells["entryID"].Value.ToString();
+                        string riderName = selectedRow.Cells["Rider Name"].Value.ToString();
+                        string horseName = selectedRow.Cells["Horse Name"].Value.ToString();
+
+                        //for debug
+                        //MessageBox.Show("your EntryID is " + index);
+
+                        using (SqlConnection conn = new SqlConnection(getConnectionString()))
+                        {
+                            string updateTimeQuery = "update Entry set runtime = " + newTime + " where entryID = " + index;
+                            SqlCommand updateTime = new SqlCommand(updateTimeQuery, conn);
+                            conn.Open();
+                            updateTime.ExecuteNonQuery();
+
+                            //Record rollover times where applicable, prevent randomization, put them at the top of the Entry list for that class
+                            string rolloverTimesQuery = "update Entry set drawNumber = 0, randomized = 1, runtime = " + newTime + " where link2classID <> "+classID+" and link2eventID = " + eventID + " and riderName = '" + riderName + "' and horseName = '" + horseName + "'";
+                            SqlCommand rolloverTimes = new SqlCommand(rolloverTimesQuery, conn);
+                            rolloverTimes.ExecuteNonQuery();
+                        }
+
+                        updateEntryTable();
+                        grdEntryTable.Rows[selectedRowIndex].Selected = true;
+                    }catch(Exception ex)
+                    {
+                        MessageBox.Show(ex.ToString());
+                    }
+                }
+                else if (e.ColumnIndex == 4)
+                {
+                    int selectedRowIndex = grdEntryTable.SelectedCells[0].RowIndex;
+                    DataGridViewRow selectedRow = grdEntryTable.Rows[selectedRowIndex];
+                    string index = selectedRow.Cells["entryID"].Value.ToString();
+
+                    using (SqlConnection conn = new SqlConnection(getConnectionString()))
+                    {
+                        string updateHorseNameQuery = "update Entry set horseName = '" + selectedRow.Cells["Horse Name"].Value.ToString() + "' where entryID = " + index;
+                        SqlCommand updateHorseName = new SqlCommand(updateHorseNameQuery, conn);
+                        conn.Open();
+                        updateHorseName.ExecuteNonQuery();
+
+                    }
+
+                    updateEntryTable();
+                }
+            }
+        }
+
+        private void btnRandomizeEntries_Click(object sender, EventArgs e)
+        {
+            //Need ideas on the randomization algorithm
+            //https://en.wikipedia.org/wiki/Fisher%E2%80%93Yates_shuffle
+            //http://codereview.stackexchange.com/questions/141582/shuffles-male-or-females-names-based-on-fisher-yates-algorthim?rq=1
+
+            //Determine the number of rows that have been randomized already. This will tell us the highest number in the draw order
+            //for when entries are added after the initial draw.
+            string maxDrawOrder;
+            int maxDraw = 0;
+            List<string> entries = new List<string>();
+            List<string> randomizedEntries = new List<string>();
+            string connect = getConnectionString();
+
+            try
+            {
+                string eventID = cmbEntryTableEvents.SelectedValue.ToString();
+                string classID = cmbEntryTableClasses.SelectedValue.ToString();
+                string getMaxDrawOrderQuery = "select count(*) as count from Entry where randomized = 1 and link2showID = " + cmbRiderHorseEntryShowSelection.SelectedValue.ToString() + " and link2eventID = " + eventID + " and link2classID = " + classID;
+
+                using (SqlConnection conn = new SqlConnection(connect))
+                {
+                    SqlCommand getMaxDrawOrder = new SqlCommand(getMaxDrawOrderQuery, conn);
+                    conn.Open();
+
+                    using (SqlDataReader read = getMaxDrawOrder.ExecuteReader())
+                    {  
+                        while (read.Read())
+                        {
+                            maxDrawOrder = read["count"].ToString();
+                            maxDraw = Convert.ToInt32(maxDrawOrder) + 1;
+                        }
                     }
                 }
 
+                //Need to load entries into list before we randomize them
+           
+                DataTable entriesToShuffle = new DataTable();
+                string loadEntriesQuery = "select entryID, drawNumber, riderName, randomized from Entry where randomized is null and link2showID = " + cmbRiderHorseEntryShowSelection.SelectedValue.ToString() + " and link2eventID = " + eventID + " and link2classID = " + classID;
+
+                using (SqlConnection conn = new SqlConnection(connect))
+                {
+                    SqlDataAdapter dataAdapter = new SqlDataAdapter(loadEntriesQuery, conn);
+                    conn.Open();
+                    dataAdapter.Fill(entriesToShuffle);
+
+                    foreach (DataRow row in entriesToShuffle.Rows)
+                    {
+                        entries.Add(row["entryID"].ToString());
+                    }
+
+                    //Fisher-Yates randomize the list of EntryIDs
+                    randomizedEntries = ShuffleList(entries);
+
+                    //Iterate through the shuffled list and write them sequentially with incrementing Draw numbers
+                    for (int i = 0; i < randomizedEntries.Count; i++ )
+                    {
+                        string updateDrawOrderQuery = "update Entry set randomized = 1, drawNumber = " + (maxDraw + i) + " where entryID = " + randomizedEntries[i];
+                        SqlCommand updateDrawOrder = new SqlCommand(updateDrawOrderQuery, conn);
+                        updateDrawOrder.ExecuteNonQuery();
+                    }
+
+                    updateEntryTable();
+                }
             }
-
-            //blank the fields for the next entry
-            txtRiderNameEntry.Text = "";
-            txtHorseNameEntry.Text = "";
-
-            foreach (DataGridViewRow row in grdClassesEntry.Rows)
+            catch (Exception ex)
             {
-                row.Cells["isChecked"].Value = 0;
+                MessageBox.Show(ex.ToString());
             }
 
-            updateEntryTable();
-
+            //After the list is shuffled we need to iterate the list for each Rider Name and check if they are within 15 riders of another of their runs
+            //This will need more work.
         }
 
         public static string getConnectionString()
@@ -470,14 +659,15 @@ namespace HorseShow
 
         public void updateEntryTable()
         {
-            DataTable entryTable = new DataTable();
-            string connect = getConnectionString();
-            string eventID = cmbEntryTableEvents.SelectedValue.ToString();
-            string classID = cmbEntryTableClasses.SelectedValue.ToString();
-            string viewEntryTableQuery = "select entryID, drawNumber as 'Draw Number', riderName as 'Rider Name', horseName as 'Horse Name', runtime as 'Run Time', entryfee as 'Entry Fee', randomized from Entry where link2showID = " + cmbRiderHorseEntryShowSelection.SelectedValue.ToString() + " and link2eventID = " + eventID + " and link2classID = " + classID;
 
             try
             {
+                DataTable entryTable = new DataTable();
+                string connect = getConnectionString();
+                string eventID = cmbEntryTableEvents.SelectedValue.ToString();
+                string classID = cmbEntryTableClasses.SelectedValue.ToString();
+                string viewEntryTableQuery = "select entryID, drawNumber as 'Draw Number', riderName as 'Rider Name', horseName as 'Horse Name', CAST(runtime AS DECIMAL(10,3)) as 'Run Time', entryfee as 'Entry Fee', randomized from Entry where link2showID = " + cmbRiderHorseEntryShowSelection.SelectedValue.ToString() + " and link2eventID = " + eventID + " and link2classID = " + classID + " order by drawNumber asc";
+
                 using (SqlConnection conn = new SqlConnection(connect))
                 {
                     SqlDataAdapter dataAdapter = new SqlDataAdapter(viewEntryTableQuery, conn);
@@ -491,6 +681,23 @@ namespace HorseShow
             {
                 //MessageBox.Show(ex.ToString());
             }
+        }
+
+        public List<string> ShuffleList(List<string> entries)
+        {
+            //Fisher-Yates Shuffle
+            Random random = new Random();
+            string tmp = "";
+            int length = entries.Count;
+            for (int i = 0; i < length; i++)
+            {
+                int r = (int)(random.NextDouble() * (length - i));
+                tmp = entries[r];
+                entries[r] = entries[i];
+                entries[i] = tmp;
+            }
+
+            return entries; 
         }
     }
 }
